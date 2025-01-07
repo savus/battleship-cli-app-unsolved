@@ -1,4 +1,5 @@
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
+import { lengthIsTwo, removeSpacesAndSpecialChars } from "./validations";
 
 export const createBoard = (size) => {
   const board = {};
@@ -42,5 +43,13 @@ export const printBoard = (board, debug) => {
       }
     });
   }
+  console.clear();
   return console.table(display);
+};
+
+export const getCell = (board, coords) => {
+  const cleanStr = removeSpacesAndSpecialChars(coords);
+  if (!lengthIsTwo(cleanStr)) return console.log("Invalid input length");
+
+  return cleanStr;
 };

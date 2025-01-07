@@ -1,5 +1,12 @@
-import { createBoard, printBoard } from "./board-functions";
-const board = createBoard(3);
+import { createBoard, getCell, printBoard } from "./board-functions";
+const readlineSync = require("readline-sync");
+
+const ships = [
+  { type: "large", id: 1, hits: 3, size: 3, isHorizontal: false },
+  { type: "small", id: 2, hits: 2, size: 2, isHorizontal: true },
+];
+
+export const board = createBoard(6);
 const testBoard1 = {
   A: [
     { type: "large", id: 1, hit: false }, // Represents position A0
@@ -19,3 +26,5 @@ const testBoard1 = {
 };
 
 printBoard(board, false);
+const testCoords = readlineSync.question("Type in board coords");
+console.log(getCell(board, testCoords));
