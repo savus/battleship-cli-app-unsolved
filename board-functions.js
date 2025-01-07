@@ -1,4 +1,23 @@
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+export const createBoard = (size) => {
+  const board = {};
+  const cell = { type: "empty", id: 0, hit: false };
+
+  for (let i = 0; i < size; i++) {
+    const letter = alphabet[i].toUpperCase();
+    board[letter] = [];
+    for (let j = 0; j < size; j++) {
+      board[letter][j] = cell;
+    }
+  }
+
+  return board;
+};
+
 export const printBoard = (board, debug) => {
+  const display = {};
+
   const displayCellType = (cell) => {
     switch (cell.type) {
       case "large":
@@ -10,17 +29,18 @@ export const printBoard = (board, debug) => {
     }
   };
 
-  return board.map((row) =>
-    row.map((cell) => {
+  for (const [prop, row] of Object.entries(board)) {
+    display[prop] = row.map((cell) => {
       if (debug) {
         return displayCellType(cell);
       } else {
         if (!cell.hit) {
-          return "--";
+          return "-";
         } else {
           return displayCellType(cell);
         }
       }
-    })
-  );
+    });
+  }
+  return console.table(display);
 };
