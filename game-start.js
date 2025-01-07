@@ -1,4 +1,10 @@
 import { createBoard, getCell, printBoard } from "./board-functions";
+import {
+  isValidCoords,
+  isWithinBoard,
+  lengthIsTwo,
+  removeSpacesAndSpecialChars,
+} from "./validations";
 const readlineSync = require("readline-sync");
 
 const ships = [
@@ -26,5 +32,6 @@ const testBoard1 = {
 };
 
 printBoard(board, false);
-const testCoords = readlineSync.question("Type in board coords");
-console.log(getCell(board, testCoords));
+let testCoords = readlineSync.question("Type in board coords");
+testCoords = removeSpacesAndSpecialChars(testCoords);
+console.log(isWithinBoard(board, testCoords));
