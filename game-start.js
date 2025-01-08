@@ -31,7 +31,5 @@ const testBoard1 = {
   ],
 };
 
-printBoard(board, false);
+printBoard(board, true);
 let testCoords = readlineSync.question("Type in board coords");
-testCoords = removeSpacesAndSpecialChars(testCoords);
-console.log(isWithinBoard(board, testCoords));
