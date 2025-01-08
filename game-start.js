@@ -1,5 +1,7 @@
+import { isConstructorDeclaration } from "typescript";
 import { createBoard, getCell, printBoard } from "./board-functions";
 import {
+  areCoordsCorrectType,
   isValidCoords,
   isWithinBoard,
   lengthIsTwo,
@@ -12,7 +14,7 @@ const ships = [
   { type: "small", id: 2, hits: 2, size: 2, isHorizontal: true },
 ];
 
-export const board = createBoard(6);
+export const board = createBoard(10);
 const testBoard1 = {
   A: [
     { type: "large", id: 1, hit: false }, // Represents position A0
@@ -31,5 +33,4 @@ const testBoard1 = {
   ],
 };
 
-printBoard(board, true);
-let testCoords = readlineSync.question("Type in board coords");
+printBoard(board, false);

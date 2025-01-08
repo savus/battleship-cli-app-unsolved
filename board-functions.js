@@ -38,7 +38,7 @@ export const printBoard = ({ grid }, debug) => {
         return displayCellType(cell);
       } else {
         if (!cell.hit) {
-          return "-";
+          return "🔳";
         } else {
           return displayCellType(cell);
         }
@@ -49,9 +49,6 @@ export const printBoard = ({ grid }, debug) => {
   return console.table(display);
 };
 
-export const getCell = (board, coords) => {
-  const cleanStr = removeSpacesAndSpecialChars(coords);
-  if (!lengthIsTwo(cleanStr)) return console.log("Invalid input length");
-
-  return cleanStr;
+export const getCell = ({ grid }, coords) => {
+  return grid[coords[0]][coords[1]];
 };
