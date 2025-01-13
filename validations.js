@@ -2,7 +2,7 @@ export const removeSpacesAndSpecialChars = (str) => {
   return str.replace(/[^a-z0-9]/gi, "");
 };
 
-export const lengthIsTwo = (str) => str.length === 2;
+export const isLengthTwo = (str) => str.length === 2;
 
 export const areCoordsCorrectType = (coords) => {
   const isYValid = /[a-z]/i.test(coords[0]);
@@ -18,10 +18,10 @@ export const isWithinBoard = (board, coords) => {
   return isYValid && isXValid;
 };
 
-export const isValidCoords = (board, coords) => {
+export const areCoordsValid = (board, coords) => {
   const adjustedCoords = removeSpacesAndSpecialChars(coords).toUpperCase();
 
-  if (!lengthIsTwo(adjustedCoords)) {
+  if (!isLengthTwo(adjustedCoords)) {
     console.log("Invalid coords length");
     return false;
   }

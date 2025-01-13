@@ -1,12 +1,5 @@
-import { isConstructorDeclaration } from "typescript";
-import { createBoard, getCell, printBoard } from "./board-functions";
-import {
-  areCoordsCorrectType,
-  isValidCoords,
-  isWithinBoard,
-  lengthIsTwo,
-  removeSpacesAndSpecialChars,
-} from "./validations";
+import { createBoard, getCell, printBoard, setCell } from "./board-functions";
+import { areCoordsValid } from "./validations";
 const readlineSync = require("readline-sync");
 
 const ships = [

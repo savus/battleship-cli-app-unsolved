@@ -1,5 +1,4 @@
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
-import { lengthIsTwo, removeSpacesAndSpecialChars } from "./validations";
 
 export const createBoard = (size) => {
   const board = {
@@ -51,4 +50,8 @@ export const printBoard = ({ grid }, debug) => {
 
 export const getCell = ({ grid }, coords) => {
   return grid[coords[0]][coords[1]];
+};
+
+export const setCell = ({ grid }, coords, cell) => {
+  grid[coords[0]][coords[1]] = cell;
 };
