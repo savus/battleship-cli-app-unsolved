@@ -1,41 +1,26 @@
-export const removeSpacesAndSpecialChars = (str) => {
-  return str.replace(/[^a-z0-9]/gi, "");
+export const removeSpecialCharsAndSpaces = (str) =>
+  str.replace(/[^a-z0-9]/gi, "").toUpperCase();
+
+export const separateChars = (str) => {
+  return { letter: str.slice(0, 1), number: str.slice(1) };
 };
 
-export const isLengthTwo = (str) => str.length === 2;
+export const areCoordsCorrectType = (coords) =>
+  /[a-z]/i.test(coords.letter) && /\d/g.test(coords.number);
 
-export const areCoordsCorrectType = (coords) => {
-  const isYValid = /[a-z]/i.test(coords[0]);
-  const isXValid = /\d/.test(coords[1]);
-  return isYValid && isXValid;
-};
+export const areCoordsWithinBoard = (coords, board) =>
+  coords.number < board.size && coords.letter.charCodeAt() - 64 <= board.size;
 
-export const isWithinBoard = (board, coords) => {
-  const y = coords[0].toLowerCase().charCodeAt() - 96;
-  const x = coords[1];
-  const isYValid = y <= board.size && y > 0;
-  const isXValid = x < board.size && x > -1;
-  return isYValid && isXValid;
-};
-
-export const areCoordsValid = (board, coords) => {
-  const adjustedCoords = removeSpacesAndSpecialChars(coords).toUpperCase();
-
-  if (!isLengthTwo(adjustedCoords)) {
-    console.log("Invalid coords length");
+export const areCoordsValid = (coords, board) => {
+  if (!areCoordsCorrectType(coords)) {
+    console.log("coordinates are not correct type");
     return false;
   }
 
-  if (!areCoordsCorrectType(adjustedCoords)) {
-    console.log("Coords are invalid type");
+  if (!areCoordsWithinBoard(coords, board)) {
+    console.log("coordinates are not within board");
     return false;
   }
 
-  if (!isWithinBoard(board, adjustedCoords)) {
-    console.log("Coords are outside of board");
-    return false;
-  }
-
-  console.log("Coords are valid", adjustedCoords);
   return true;
 };

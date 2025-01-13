@@ -1,5 +1,12 @@
-import { createBoard, getCell, printBoard, setCell } from "./board-functions";
-import { areCoordsValid } from "./validations";
+import { createBoard, printBoard } from "./board-functions";
+import {
+  areCoordsCorrectType,
+  areCoordsValid,
+  areCoordsWithinBoard,
+  removeSpecialCharsAndSpaces,
+  separateChars,
+} from "./validations";
+
 const readlineSync = require("readline-sync");
 
 const ships = [
@@ -7,7 +14,7 @@ const ships = [
   { type: "small", id: 2, hits: 2, size: 2, isHorizontal: true },
 ];
 
-export const board = createBoard(10);
+export const board = createBoard(12);
 const testBoard1 = {
   A: [
     { type: "large", id: 1, hit: false }, // Represents position A0
@@ -27,3 +34,22 @@ const testBoard1 = {
 };
 
 printBoard(board, false);
+
+board.grid["A"][0] = { type: "large", id: 1, hit: true };
+board.grid["A"][1] = { type: "large", id: 1, hit: true };
+
+printBoard(board, false);
+
+// board.grid[userInput[0]][userInput[1]] = { type: "small", id: 1, hit: true };
+
+const userInput = readlineSync.question("Enter coords");
+
+const cleanStrCopy = removeSpecialCharsAndSpaces(userInput);
+
+console.log(cleanStrCopy);
+
+const separatedChars = separateChars(cleanStrCopy);
+
+console.log(separatedChars);
+
+console.log(areCoordsValid(separatedChars, board));
