@@ -1,4 +1,4 @@
-import { createBoard, printBoard } from "./board-functions";
+import { createBoard, printBoard, setCell } from "./board-functions";
 import {
   areCoordsCorrectType,
   areCoordsValid,
@@ -42,7 +42,7 @@ printBoard(board, false);
 
 // board.grid[userInput[0]][userInput[1]] = { type: "small", id: 1, hit: true };
 
-const userInput = readlineSync.question("Enter coords");
+const userInput = readlineSync.question("Enter coords\n");
 
 const cleanStrCopy = removeSpecialCharsAndSpaces(userInput);
 
@@ -50,6 +50,7 @@ console.log(cleanStrCopy);
 
 const separatedChars = separateChars(cleanStrCopy);
 
-console.log(separatedChars);
-
-console.log(areCoordsValid(separatedChars, board));
+if (areCoordsValid(board, separatedChars)) {
+  setCell(board, separatedChars, { type: "large", id: 1, hit: true });
+  printBoard(board, false);
+}

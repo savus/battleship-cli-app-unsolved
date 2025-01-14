@@ -17,7 +17,7 @@ export const createBoard = (size) => {
   return board;
 };
 
-export const printBoard = ({ grid }, debug) => {
+export const printBoard = (board, debug) => {
   const display = {};
 
   const displayCellType = (cell) => {
@@ -31,7 +31,7 @@ export const printBoard = ({ grid }, debug) => {
     }
   };
 
-  for (const [prop, row] of Object.entries(grid)) {
+  for (const [prop, row] of Object.entries(board.grid)) {
     display[prop] = row.map((cell) => {
       if (debug) {
         return displayCellType(cell);
@@ -48,10 +48,10 @@ export const printBoard = ({ grid }, debug) => {
   return console.table(display);
 };
 
-export const getCell = ({ grid }, coords) => {
-  return grid[coords[0]][coords[1]];
+export const getCell = (board, coords) => {
+  return board.grid[coords[0]][coords[1]];
 };
 
-export const setCell = ({ grid }, coords, cell) => {
-  grid[coords[0]][coords[1]] = cell;
+export const setCell = (board, coords, cell) => {
+  board.grid[coords.letter][coords.number] = cell;
 };

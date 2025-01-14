@@ -8,16 +8,16 @@ export const separateChars = (str) => {
 export const areCoordsCorrectType = (coords) =>
   /[a-z]/i.test(coords.letter) && /\d/g.test(coords.number);
 
-export const areCoordsWithinBoard = (coords, board) =>
+export const areCoordsWithinBoard = (board, coords) =>
   coords.number < board.size && coords.letter.charCodeAt() - 64 <= board.size;
 
-export const areCoordsValid = (coords, board) => {
+export const areCoordsValid = (board, coords) => {
   if (!areCoordsCorrectType(coords)) {
     console.log("coordinates are not correct type");
     return false;
   }
 
-  if (!areCoordsWithinBoard(coords, board)) {
+  if (!areCoordsWithinBoard(board, coords)) {
     console.log("coordinates are not within board");
     return false;
   }
