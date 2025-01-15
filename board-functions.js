@@ -1,6 +1,6 @@
 import { areCoordsValid, convertInput } from "./validations";
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz";
+export const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 export const createBoard = (size) => {
   const board = {

@@ -1,10 +1,12 @@
 import {
+  alphabet,
   cellIsOccupied,
   createBoard,
   getCell,
   printBoard,
   setCell,
 } from "./board-functions";
+import { convertInput } from "./validations";
 
 const readlineSync = require("readline-sync");
 
@@ -32,10 +34,41 @@ const testBoard1 = {
   ],
 };
 
-board.grid["A"][0] = { type: "large", id: 1, hit: true };
-board.grid["A"][1] = { type: "large", id: 1, hit: true };
-board.grid["J"][1] = { type: "small", id: 1, hit: true };
+// board.grid["A"][0] = { type: "large", id: 1, hit: true };
+// board.grid["A"][1] = { type: "large", id: 1, hit: true };
+// board.grid["J"][1] = { type: "small", id: 1, hit: true };
 
 printBoard(board, false);
 
 // const userInput = readlineSync.question("Enter coords \n");
+
+const isHorizontal = true;
+const shipLength = 5;
+
+const setShipPieces = (board, numOfPieces, isHorizontal) => {};
+
+const getRandomCoords = () => {
+  let randomCoords = `${alphabet[
+    Math.floor(Math.random() * board.size)
+  ].toUpperCase()}${Math.floor(Math.random() * board.size)}`;
+  return randomCoords;
+};
+
+const setRandomCell = (board) => {
+  setCell(board, randomCoords, { type: "large", id: 1, hit: true });
+};
+
+const setFirstPiece = (board, cellType) => {
+  let randomCoords = getRandomCoords();
+
+  while (cellIsOccupied(board, randomCoords)) {
+    randomCoords = getRandomCoords();
+  }
+
+  setCell(board, randomCoords, { type: cellType, id: 1, hit: true });
+  return randomCoords;
+};
+
+setFirstPiece(board, "empty");
+
+printBoard(board, false);
