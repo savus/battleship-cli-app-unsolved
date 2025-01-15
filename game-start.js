@@ -1,5 +1,9 @@
-import { createBoard, printBoard } from "./board-functions";
-import { areCoordsValid, convertInput } from "./validations";
+import {
+  cellIsOccupied,
+  createBoard,
+  getCell,
+  printBoard,
+} from "./board-functions";
 
 const readlineSync = require("readline-sync");
 
@@ -33,8 +37,4 @@ board.grid["J"][1] = { type: "small", id: 1, hit: true };
 
 printBoard(board, false);
 
-const userInput = readlineSync.question("Enter coords \n");
-
-if (areCoordsValid(board, userInput)) {
-  console.log(convertInput(userInput));
-}
+// const userInput = readlineSync.question("Enter coords \n");
