@@ -1,10 +1,5 @@
-import {
-  cellIsOccupied,
-  createBoard,
-  getCell,
-  printBoard,
-} from "./board-functions";
-import { convertChars } from "./validations";
+import { createBoard, printBoard } from "./board-functions";
+import { areCoordsValid, convertInput } from "./validations";
 
 const readlineSync = require("readline-sync");
 
@@ -32,30 +27,14 @@ const testBoard1 = {
   ],
 };
 
-printBoard(board, false);
-
 board.grid["A"][0] = { type: "large", id: 1, hit: true };
 board.grid["A"][1] = { type: "large", id: 1, hit: true };
 board.grid["J"][1] = { type: "small", id: 1, hit: true };
 
 printBoard(board, false);
 
-// board.grid[userInput[0]][userInput[1]] = { type: "small", id: 1, hit: true };
+const userInput = readlineSync.question("Enter coords \n");
 
-// const userInput = readlineSync.question("Enter coords\n");
-
-// const cleanStrCopy = removeSpecialCharsAndSpaces(userInput);
-
-// console.log(cleanStrCopy);
-
-// const separatedChars = convertChars(cleanStrCopy);
-
-// if (areCoordsValid(board, separatedChars)) {
-//   setCell(board, separatedChars, { type: "large", id: 1, hit: true });
-//   printBoard(board, false);
-// }
-
-console.log(getCell(board, { letter: "A", number: "0" }));
-
-console.log(cellIsOccupied(board, { letter: "A", number: "0" }));
-console.log(cellIsOccupied(board, { letter: "J", number: "1" }));
+if (areCoordsValid(board, userInput)) {
+  console.log(convertInput(userInput));
+}
