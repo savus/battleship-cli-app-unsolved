@@ -1,7 +1,7 @@
 export const removeSpecialCharsAndSpaces = (str) =>
   str.replace(/[^a-z0-9]/gi, "").toUpperCase();
 
-export const separateChars = (str) => {
+export const convertChars = (str) => {
   return { letter: str.slice(0, 1), number: str.slice(1) };
 };
 

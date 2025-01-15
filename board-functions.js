@@ -48,10 +48,15 @@ export const printBoard = (board, debug) => {
   return console.table(display);
 };
 
+export const cellIsOccupied = (board, coords) => {
+  return board.grid[coords.letter][coords.number].type !== "empty";
+};
+
 export const getCell = (board, coords) => {
-  return board.grid[coords[0]][coords[1]];
+  return board.grid[coords.letter][coords.number];
 };
 
 export const setCell = (board, coords, cell) => {
   board.grid[coords.letter][coords.number] = cell;
+  return;
 };
