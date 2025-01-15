@@ -3,6 +3,7 @@ import {
   createBoard,
   getCell,
   printBoard,
+  setCell,
 } from "./board-functions";
 
 const readlineSync = require("readline-sync");

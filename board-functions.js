@@ -59,11 +59,21 @@ export const cellIsOccupied = (board, str) => {
   return board.grid[convertedStr.letter][convertedStr.number].type !== "empty";
 };
 
-export const getCell = (board, coords) => {
-  return board.grid[coords.letter][coords.number];
+export const getCell = (board, str) => {
+  const convertedStr = convertInput(str);
+  if (!areCoordsValid(board, str)) {
+    throw new Error("Coordinates are not valid");
+  }
+  return board.grid[convertedStr.letter][convertedStr.number];
 };
 
 export const setCell = (board, str, cell) => {
-  board.grid[coords.letter][coords.number] = cell;
+  const convertedStr = convertInput(str);
+
+  if (!areCoordsValid(board, str)) {
+    throw new Error("Coordinates are not valid");
+  }
+
+  board.grid[convertedStr.letter][convertedStr.number] = cell;
   return;
 };
