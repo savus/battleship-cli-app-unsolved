@@ -38,14 +38,10 @@ const testBoard1 = {
 // board.grid["A"][1] = { type: "large", id: 1, hit: true };
 // board.grid["J"][1] = { type: "small", id: 1, hit: true };
 
-printBoard(board, false);
-
 // const userInput = readlineSync.question("Enter coords \n");
 
 const isHorizontal = true;
 const shipLength = 5;
-
-const setShipPieces = (board, numOfPieces, isHorizontal) => {};
 
 const getRandomCoords = () => {
   let randomCoords = `${alphabet[
@@ -69,6 +65,16 @@ const setFirstPiece = (board, cellType) => {
   return randomCoords;
 };
 
-setFirstPiece(board, "empty");
+// while (cellIsOccupied(board, randomCoords)) {
+//   randomCoords = getRandomCoords();
+// }
 
+const setShipPieces = (board, numOfPieces, isHorizontal) => {
+  let startingPoint = setFirstPiece(board, "large");
+  const locations = [startingPoint];
+
+  console.log(startingPoint);
+};
+
+setShipPieces(board, 0, true);
 printBoard(board, false);

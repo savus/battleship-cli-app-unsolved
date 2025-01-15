@@ -46,7 +46,6 @@ export const printBoard = (board, debug) => {
       }
     });
   }
-  console.clear();
   return console.table(display);
 };
 
