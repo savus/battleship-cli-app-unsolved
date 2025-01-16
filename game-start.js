@@ -1,5 +1,9 @@
 import { createBoard, printBoard } from "./board-functions";
-import { removeSpacesAndSpecialChars } from "./validations";
+import {
+  areCharsCorrectType,
+  convertStrToCoords,
+  removeSpacesAndSpecialChars,
+} from "./validations";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -63,4 +67,4 @@ const userInput = readlineSync.question("Please enter coords \n");
 
 const cleanStrCopy = removeSpacesAndSpecialChars(userInput);
 
-console.log(cleanStrCopy);
+console.log(convertStrToCoords(cleanStrCopy));
