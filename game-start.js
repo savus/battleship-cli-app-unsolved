@@ -1,8 +1,9 @@
 import { createBoard, printBoard } from "./board-functions";
 import {
   convertCoordsToNumbers,
-  convertStrToCoords,
+  convertNumbersToCoords,
   removeSpacesAndSpecialChars,
+  separateChars,
 } from "./validations";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -67,14 +68,17 @@ const userInput = readlineSync.question("Please enter coords \n");
 
 const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
 
-const convertedStr = convertStrToCoords(cleanStrCopy);
+const separatedChars = separateChars(cleanStrCopy);
 
-const convertedCoords = convertCoordsToNumbers(convertedStr);
+const convertedCoords = convertCoordsToNumbers(separatedChars);
 
-board1.grid[convertedStr.col][convertedStr.row] = {
+const revertedCoords = convertNumbersToCoords(convertedCoords);
+
+console.log(revertedCoords);
+
+board1.grid[separatedChars.col][separatedChars.row] = {
   type: "large",
   id: 1,
   hit: true,
 };
-console.log(convertedCoords[1]);
 printBoard(board1, false);
