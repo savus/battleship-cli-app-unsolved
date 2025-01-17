@@ -1,4 +1,5 @@
 import { alphabet } from "./game-start";
+import { separateChars } from "./validations";
 
 export const createBoard = (size) => {
   const board = {
@@ -38,6 +39,11 @@ export const printBoard = (board, debug) => {
 export const getCell = (board, strCoords) => {
   const [col, row] = separateChars(strCoords);
   return board.grid[col][row];
+};
+
+export const isCellOccupied = (board, str) => {
+  const [col, row] = separateChars(str);
+  return board.grid[col][row].type !== "empty";
 };
 
 export const setCell = (board, strCoords, cell) => {

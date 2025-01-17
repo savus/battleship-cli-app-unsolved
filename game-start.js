@@ -1,11 +1,10 @@
-import { createBoard, printBoard } from "./board-functions";
 import {
-  areCharsCorrectType,
-  areCoordsValid,
-  areCoordsWithinBoard,
-  removeSpacesAndSpecialChars,
-  separateChars,
-} from "./validations";
+  createBoard,
+  isCellOccupied,
+  printBoard,
+  setCell,
+} from "./board-functions";
+import { separateChars } from "./validations";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -65,6 +64,12 @@ const board1 = createBoard(11);
 console.clear();
 printBoard(board1, false);
 
-const userInput = readlineSync.question("Please enter coordinates ...\n");
+const getStartingPoint = () => {
+  let yCoord = alphabet[Math.floor(Math.random() * board1.size)];
+  let xCoord = Math.floor(Math.random() * board1.size);
+};
 
-const cleanedCopy = removeSpacesAndSpecialChars(userInput);
+setCell(board1, "A0", { type: "large", id: 0, hit: true });
+printBoard(board1, false);
+
+console.log(isCellOccupied(board1, "A1"));
