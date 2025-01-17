@@ -1,7 +1,7 @@
 import { createBoard, printBoard } from "./board-functions";
 import {
-  convertCoordsToNumbers,
-  convertNumbersToCoords,
+  areCharsCorrectType,
+  areCoordsWithinBoard,
   removeSpacesAndSpecialChars,
   separateChars,
 } from "./validations";
@@ -68,17 +68,4 @@ const userInput = readlineSync.question("Please enter coords \n");
 
 const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
 
-const separatedChars = separateChars(cleanStrCopy);
-
-const convertedCoords = convertCoordsToNumbers(separatedChars);
-
-const revertedCoords = convertNumbersToCoords(convertedCoords);
-
-console.log(revertedCoords);
-
-board1.grid[separatedChars.col][separatedChars.row] = {
-  type: "large",
-  id: 1,
-  hit: true,
-};
-printBoard(board1, false);
+console.log(areCoordsWithinBoard(board1, cleanStrCopy));
