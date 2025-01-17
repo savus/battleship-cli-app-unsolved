@@ -34,3 +34,13 @@ export const printBoard = (board, debug) => {
 
   return console.table(gridDisplay);
 };
+
+export const getCell = (board, strCoords) => {
+  const [col, row] = separateChars(strCoords);
+  return board.grid[col][row];
+};
+
+export const setCell = (board, strCoords, cell) => {
+  const [col, row] = separateChars(strCoords);
+  return (board.grid[col][row] = cell);
+};

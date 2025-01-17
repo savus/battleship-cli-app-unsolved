@@ -63,8 +63,8 @@ const readlineSync = require("readline-sync");
 const board1 = createBoard(11);
 
 console.clear();
-printBoard(board1, true);
+printBoard(board1, false);
 
-const userInput = readlineSync.question("Please enter coords \n");
+const userInput = readlineSync.question("Please enter coordinates ...\n");
 
-const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
+const cleanedCopy = removeSpacesAndSpecialChars(userInput);
