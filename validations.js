@@ -9,7 +9,27 @@ export const separateChars = (str) => {
   return [col, row];
 };
 
-export const areCoordsWithinBoard = (board, str) => {
+export const convertCoordsToNums = (str) => {
   const [col, row] = separateChars(str);
-  return col.charCodeAt() - 65 < board.size && parseInt(row) < board.size;
+  return [col.charCodeAt() - 65, parseInt(row)];
+};
+
+export const areCoordsWithinBoard = (board, str) => {
+  const [col, row] = convertCoordsToNums(str);
+  return col < board.size && row < board.size;
+};
+
+export const areCoordsValid = (board, str) => {
+  if (!areCharsCorrectType(str)) {
+    console.log("Coordinates are not correct type");
+    return false;
+  }
+
+  if (!areCoordsWithinBoard(board, str)) {
+    console.log("Coordinates are not within board");
+    return false;
+  }
+
+  console.log("Coordinates are valid");
+  return true;
 };

@@ -1,6 +1,7 @@
 import { createBoard, printBoard } from "./board-functions";
 import {
   areCharsCorrectType,
+  areCoordsValid,
   areCoordsWithinBoard,
   removeSpacesAndSpecialChars,
   separateChars,
@@ -67,5 +68,3 @@ printBoard(board1, true);
 const userInput = readlineSync.question("Please enter coords \n");
 
 const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
-
-console.log(areCoordsWithinBoard(board1, cleanStrCopy));
