@@ -1,5 +1,6 @@
 import {
   createBoard,
+  getCell,
   getRandomCoords,
   isCellOccupied,
   printBoard,
@@ -86,25 +87,36 @@ setCell(board1, "C4", { type: "empty", id: 0, hit: false });
 
 printBoard(board1, false);
 
-let length = 4;
-let randomPoint = "A0";
-let [col, row] = convertCoordsToNums(randomPoint);
+const placeShips = () => {
+  let length = 4;
+  let startingPoint = getRandomCoords(board1);
+  let [col, row] = convertCoordsToNums(startingPoint);
+  const locations = [];
 
-for (let i = 0; i < length; i++) {
-  console.log(isCellOccupied(board1, revertCoordsToString(col, row)));
+  while (isCellOccupied(board1, startingPoint)) {
+    startingPoint = getRandomCoords(board1);
+    [col, row] = convertCoordsToNums(startingPoint);
+  }
+
+  //starting point is set
+  locations.push(revertCoordsToString(col, row));
   row++;
-}
 
-row -= 4;
+  for (let i = 0; i < length - 1; i++) {
+    if (isCellOccupied(board1, revertCoordsToString(col, row))) {
+      return placeShips();
+    }
+    locations.push(revertCoordsToString(col, row));
 
-for (let i = 0; i < length; i++) {
-  setCell(board1, revertCoordsToString(col, row), {
-    type: "small",
-    id: 0,
-    hit: true,
-  });
-  row++;
-}
+    row++;
+  }
+
+  for (let i = 0; i < locations.length; i++) {
+    setCell(board1, locations[i], { type: "small", id: 0, hit: true });
+  }
+
+  console.log("success");
+};
 
 // setCell(board1, randomPoint, { type: "small", id: 0, hit: true });
 
@@ -121,4 +133,5 @@ for (let i = 0; i < length; i++) {
 // }
 
 console.clear();
+placeShips();
 printBoard(board1, false);
