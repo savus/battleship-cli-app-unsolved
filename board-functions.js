@@ -10,7 +10,7 @@ export const createBoard = (size) => {
   for (let i = 0; i < board.size; i++) {
     board.grid[alphabet[i]] = [];
     for (let j = 0; j < board.size; j++) {
-      board.grid[alphabet[i]][j] = { type: "empty", id: 1, hit: false };
+      board.grid[alphabet[i]][j] = { type: "large", id: 1, hit: true };
     }
   }
 
@@ -49,4 +49,10 @@ export const isCellOccupied = (board, str) => {
 export const setCell = (board, strCoords, cell) => {
   const [col, row] = separateChars(strCoords);
   return (board.grid[col][row] = cell);
+};
+
+export const getRandomCoords = (board) => {
+  let yCoord = alphabet[Math.floor(Math.random() * board.size)];
+  let xCoord = Math.floor(Math.random() * board.size);
+  return `${yCoord}${xCoord}`;
 };

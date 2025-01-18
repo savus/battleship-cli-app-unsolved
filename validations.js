@@ -1,3 +1,5 @@
+import { alphabet } from "./game-start";
+
 export const removeSpacesAndSpecialChars = (str) =>
   str.replace(/[^a-z0-9]/gi, "");
 
@@ -12,6 +14,10 @@ export const separateChars = (str) => {
 export const convertCoordsToNums = (str) => {
   const [col, row] = separateChars(str);
   return [col.charCodeAt() - 65, parseInt(row)];
+};
+
+export const revertCoordsToString = (col, row) => {
+  return `${alphabet[col]}${row}`;
 };
 
 export const areCoordsWithinBoard = (board, str) => {
