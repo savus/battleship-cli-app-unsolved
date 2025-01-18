@@ -88,21 +88,37 @@ printBoard(board1, false);
 
 let length = 4;
 let randomPoint = "A0";
-
-setCell(board1, randomPoint, { type: "small", id: 0, hit: true });
 let [col, row] = convertCoordsToNums(randomPoint);
 
-while (length > 1) {
-  col += 0;
-  row += 1;
+for (let i = 0; i < length; i++) {
+  console.log(isCellOccupied(board1, revertCoordsToString(col, row)));
+  row++;
+}
 
+row -= 4;
+
+for (let i = 0; i < length; i++) {
   setCell(board1, revertCoordsToString(col, row), {
     type: "small",
     id: 0,
     hit: true,
   });
-  length--;
+  row++;
 }
+
+// setCell(board1, randomPoint, { type: "small", id: 0, hit: true });
+
+// while (length > 1) {
+//   col += 0;
+//   row += 1;
+
+//   setCell(board1, revertCoordsToString(col, row), {
+//     type: "small",
+//     id: 0,
+//     hit: true,
+//   });
+//   length--;
+// }
 
 console.clear();
 printBoard(board1, false);
