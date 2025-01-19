@@ -32,4 +32,5 @@ setCell(board1, "D2", { type: "empty", id: 0, hit: false });
 setCell(board1, "D3", { type: "empty", id: 0, hit: false });
 setCell(board1, "D4", { type: "empty", id: 0, hit: false });
 
-console.log(ships);
+ships[0].placePieces(board1);
+printBoard(board1, true);

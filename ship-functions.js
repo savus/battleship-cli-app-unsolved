@@ -2,8 +2,8 @@ import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
 import { convertCoordsToNums, revertCoordsToString } from "./validations";
 
 export const shipData = [
-  { name: "Destroyer", id: 0, type: "large", length: 4 },
-  // { name: "Cruiser", id: 1, type: "large", length: 3 },
+  { name: "Destroyer", id: 1, type: "small", length: 4 },
+  // { name: "Cruiser", id: 2, type: "large", length: 3 },
 ];
 
 const shipLocations = [];
@@ -21,32 +21,28 @@ class Ship {
 
   placePieces(board) {
     let startingPoint = getRandomCoords(board);
-    let [col, row] = convertCoordsToNumss(startingPoint);
+    let [col, row] = convertCoordsToNums(startingPoint);
+    let trackedLocations = [startingPoint];
 
-    while (isCellOccupied(board, startingPoint)) {
-      startingPoint = getRandomCoords(board);
-      [col, row] = convertCoordsToNums(startingPoint);
-    }
-
-    this.locations.push(revertCoordsToString(col, row));
-    this.isHorizontal ? row++ : col++;
-
-    for (let i = 0; i < this.length - 1; i++) {
+    for (let i = 0; i < this.length; i++) {
       if (isCellOccupied(board, revertCoordsToString(col, row))) {
-        return placePieces(board);
+        return this.placePieces(board);
       }
-      this.locations.push(revertCoordsToString(col, row));
 
+      trackedLocations.push(revertCoordsToString(col, row));
       this.isHorizontal ? row++ : col++;
     }
 
-    for (let i = 0; i < this.locations.length; i++) {
-      setCell(board, this.locations[i], {
+    for (let i = 0; i < trackedLocations.length; i++) {
+      setCell(board, trackedLocations[i], {
         type: this.type,
         id: this.id,
         hit: false,
       });
     }
+
+    this.locations.push(...trackedLocations);
+    console.log(trackedLocations);
 
     console.log("success");
   }
