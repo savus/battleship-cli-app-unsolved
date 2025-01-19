@@ -3,7 +3,7 @@ import { convertCoordsToNums, revertCoordsToString } from "./validations";
 
 export const shipData = [
   { name: "Destroyer", id: 1, type: "small", length: 4 },
-  // { name: "Cruiser", id: 2, type: "large", length: 3 },
+  { name: "Cruiser", id: 2, type: "small", length: 3 },
 ];
 
 const shipLocations = [];
@@ -22,7 +22,7 @@ class Ship {
   placePieces(board) {
     let startingPoint = getRandomCoords(board);
     let [col, row] = convertCoordsToNums(startingPoint);
-    let trackedLocations = [startingPoint];
+    let trackedLocations = [];
 
     for (let i = 0; i < this.length; i++) {
       if (isCellOccupied(board, revertCoordsToString(col, row))) {
@@ -42,7 +42,6 @@ class Ship {
     }
 
     this.locations.push(...trackedLocations);
-    console.log(trackedLocations);
 
     console.log("success");
   }
@@ -52,7 +51,6 @@ export const createShips = (data) => {
   return data.map((ship) => {
     const { name, id, type, length } = ship;
     const horizontal = Math.floor(Math.random() * 2) === 0 ? true : false;
-    const newShip = new Ship(name, id, type, length, horizontal);
-    return newShip;
+    return new Ship(name, id, type, length, horizontal);
   });
 };
