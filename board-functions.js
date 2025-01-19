@@ -17,7 +17,7 @@ export const createBoard = (size) => {
   return board;
 };
 
-export const printBoard = (board, debug) => {
+export const printBoard = (board, debug = false) => {
   const gridDisplay = {};
 
   const displayCellType = (cell) => {
