@@ -8,9 +8,9 @@ import {
 export const shipData = [
   { name: "Destroyer", id: 1, type: "small", length: 5 },
   { name: "Cruiser", id: 2, type: "small", length: 4 },
-  { name: "Battleship", id: 3, type: "small", length: 4 },
-  { name: "Carrier", id: 4, type: "small", length: 3 },
-  { name: "Smallest", id: 5, type: "small", length: 2 },
+  // { name: "Battleship", id: 3, type: "small", length: 4 },
+  // { name: "Carrier", id: 4, type: "small", length: 3 },
+  // { name: "Smallest", id: 5, type: "small", length: 2 },
 ];
 
 class Ship {
