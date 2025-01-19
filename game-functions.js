@@ -1,5 +1,4 @@
 import { getCell, printBoard, setCell } from "./board-functions";
-import { shipLocations } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
