@@ -10,7 +10,7 @@ export const createBoard = (size) => {
   for (let i = 0; i < board.size; i++) {
     board.grid[alphabet[i]] = [];
     for (let j = 0; j < board.size; j++) {
-      board.grid[alphabet[i]][j] = { type: "empty", id: 1, hit: false };
+      board.grid[alphabet[i]][j] = { type: "empty", id: 0, hit: false };
     }
   }
 
@@ -24,7 +24,7 @@ export const printBoard = (board, debug) => {
     const images = {
       large: () => (debug ? "🟠" : cell.hit ? "🟠" : "🔳"),
       small: () => (debug ? "🔵" : cell.hit ? "🔵" : "🔳"),
-      empty: () => (debug ? "❗" : cell.hit ? "❗" : "🔳"),
+      empty: () => (debug ? (cell.hit ? "❗" : "🔳") : cell.hit ? "❗" : "🔳"),
     };
     return images[cell.type]();
   };

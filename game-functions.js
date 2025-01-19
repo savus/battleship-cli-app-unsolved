@@ -1,7 +1,8 @@
 import { getCell, printBoard, setCell } from "./board-functions";
 import { shipLocations } from "./game-start";
+import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
-const readlineSync = require("readline-sync");
+export const readlineSync = require("readline-sync");
 
 export const checkShipLocations = (str) => shipLocations.includes(str);
 
@@ -15,39 +16,50 @@ export const isShipDead = (ship) => ship.lives === 0;
 export const checkIfWon = (shipList) =>
   shipList.filter((ship) => ship.lives > 0) === 0;
 
-export const playTurn = (board, shipList) => {
-  printBoard(board, true);
-  let userInput = readlineSync.question("Please enter coords...\n");
-  if (userInput === "quit") {
+export const playTurn = (board, shipList, debug) => {
+  console.clear();
+  printBoard(board, debug);
+  let userInput = readlineSync.question(
+    `Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
+      debug ? "exit" : "enter"
+    } debug mode]\n`
+  );
+  const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
+  if (cleanStrCopy.toLowerCase() === "quit") {
     return;
+  } else if (cleanStrCopy.toLowerCase() === "debug") {
+    debug = !debug;
+    return playTurn(board, shipList, debug);
   } else {
-    if (isLocationAlreadyHit(board, userInput)) {
-      console.log("This location has already been hit");
-    } else {
-      if (!checkShipLocations(userInput)) {
-        setCell(board, userInput, { type: "empty", id: 0, hit: true });
-        console.log("Sorry, you missed!");
+    if (areCoordsValid(board, cleanStrCopy)) {
+      if (isLocationAlreadyHit(board, cleanStrCopy)) {
+        readlineSync.question("This location has already been hit");
       } else {
-        const hitShip = findShip(shipList, userInput);
-        setCell(board, userInput, {
-          type: hitShip.type,
-          id: hitShip.id,
-          hit: true,
-        });
-        console.log("You made a hit!");
-        hitShip.subtractLives(1);
-        if (isShipDead(hitShip)) {
-          const remainingShips = shipList.filter((ship) => ship.lives > 0);
-          console.log(`${hitShip.name} has been sunk!`);
-          if (remainingShips.length === 0) {
-            console.log("Congrats! You won!");
-            return;
-          } else {
-            console.log(`${remainingShips.length} remaining!`);
+        if (!checkShipLocations(cleanStrCopy)) {
+          setCell(board, cleanStrCopy, { type: "empty", id: 0, hit: true });
+          readlineSync.question("Sorry, you missed!");
+        } else {
+          const hitShip = findShip(shipList, cleanStrCopy);
+          setCell(board, cleanStrCopy, {
+            type: hitShip.type,
+            id: hitShip.id,
+            hit: true,
+          });
+          readlineSync.question("You made a hit!");
+          hitShip.subtractLives(1);
+          if (isShipDead(hitShip)) {
+            const remainingShips = shipList.filter((ship) => ship.lives > 0);
+            readlineSync.question(`${hitShip.name} has been sunk!`);
+            if (remainingShips.length === 0) {
+              readlineSync.question("Congrats! You won!");
+              return;
+            } else {
+              readlineSync.question(`${remainingShips.length} remaining!`);
+            }
           }
         }
       }
     }
   }
-  return playTurn(board, shipList);
+  return playTurn(board, shipList, debug);
 };

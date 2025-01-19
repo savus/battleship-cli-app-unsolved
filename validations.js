@@ -1,3 +1,4 @@
+import { readlineSync } from "./game-functions";
 import { alphabet } from "./game-start";
 
 export const removeSpacesAndSpecialChars = (str) =>
@@ -27,15 +28,14 @@ export const areCoordsWithinBoard = (board, str) => {
 
 export const areCoordsValid = (board, str) => {
   if (!areCharsCorrectType(str)) {
-    console.log("Coordinates are not correct type");
+    readlineSync.question("Information is invalid");
     return false;
   }
 
   if (!areCoordsWithinBoard(board, str)) {
-    console.log("Coordinates are not within board");
+    readlineSync.question("Coordinates are not within board");
     return false;
   }
 
-  console.log("Coordinates are valid");
   return true;
 };
