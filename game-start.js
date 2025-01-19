@@ -3,7 +3,7 @@ import { playTurn } from "./game-functions";
 import { createShips, shipData } from "./ship-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-export const board1 = createBoard(5);
+export const board1 = createBoard(8);
 export const ships = createShips(shipData);
 export const shipLocations = [];
 export let debug = false;

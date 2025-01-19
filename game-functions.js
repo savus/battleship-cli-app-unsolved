@@ -16,6 +16,38 @@ export const isShipDead = (ship) => ship.lives === 0;
 export const checkIfWon = (shipList) =>
   shipList.filter((ship) => ship.lives > 0) === 0;
 
+const gameMain = (board, str, shipList) => {
+  if (areCoordsValid(board, str)) {
+    if (isLocationAlreadyHit(board, str)) {
+      readlineSync.question("This location has already been hit");
+    } else {
+      if (!checkShipLocations(str)) {
+        setCell(board, str, { type: "empty", id: 0, hit: true });
+        readlineSync.question("Sorry, you missed!");
+      } else {
+        const hitShip = findShip(shipList, str);
+        setCell(board, str, {
+          type: hitShip.type,
+          id: hitShip.id,
+          hit: true,
+        });
+        readlineSync.question("You made a hit!");
+        hitShip.subtractLives(1);
+        if (isShipDead(hitShip)) {
+          const remainingShips = shipList.filter((ship) => ship.lives > 0);
+          readlineSync.question(`${hitShip.name} has been sunk!`);
+          if (remainingShips.length === 0) {
+            readlineSync.question("Congrats! You won!");
+            return;
+          } else {
+            readlineSync.question(`${remainingShips.length} ships remaining!`);
+          }
+        }
+      }
+    }
+  }
+};
+
 export const playTurn = (board, shipList, debug) => {
   console.clear();
   printBoard(board, debug);
@@ -34,37 +66,7 @@ export const playTurn = (board, shipList, debug) => {
     debug = !debug;
     return playTurn(board, shipList, debug);
   } else {
-    if (areCoordsValid(board, cleanStrCopy)) {
-      if (isLocationAlreadyHit(board, cleanStrCopy)) {
-        readlineSync.question("This location has already been hit");
-      } else {
-        if (!checkShipLocations(cleanStrCopy)) {
-          setCell(board, cleanStrCopy, { type: "empty", id: 0, hit: true });
-          readlineSync.question("Sorry, you missed!");
-        } else {
-          const hitShip = findShip(shipList, cleanStrCopy);
-          setCell(board, cleanStrCopy, {
-            type: hitShip.type,
-            id: hitShip.id,
-            hit: true,
-          });
-          readlineSync.question("You made a hit!");
-          hitShip.subtractLives(1);
-          if (isShipDead(hitShip)) {
-            const remainingShips = shipList.filter((ship) => ship.lives > 0);
-            readlineSync.question(`${hitShip.name} has been sunk!`);
-            if (remainingShips.length === 0) {
-              readlineSync.question("Congrats! You won!");
-              return;
-            } else {
-              readlineSync.question(
-                `${remainingShips.length} ships remaining!`
-              );
-            }
-          }
-        }
-      }
-    }
+    gameMain(board, cleanStrCopy, shipList);
   }
   return playTurn(board, shipList, debug);
 };
