@@ -52,6 +52,10 @@ class Ship {
 
     this.locations.push(...trackedLocations);
   }
+
+  subtractLives(num) {
+    this.lives -= num;
+  }
 }
 
 export const createShips = (data) => {
