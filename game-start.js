@@ -39,4 +39,4 @@ ships.forEach((ship) => {
 
 console.log(shipLocations);
 
-playTurn(board1, gameWon, ships);
+playTurn(board1, ships);
