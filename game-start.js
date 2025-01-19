@@ -1,14 +1,13 @@
 import { createBoard, getCell, printBoard, setCell } from "./board-functions";
+import { playTurn } from "./game-functions";
 import { createShips, shipData } from "./ship-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const readlineSync = require("readline-sync");
-
-const board1 = createBoard(8);
-const ships = createShips(shipData);
-const shipLocations = [];
-let gameWon = false;
+export const board1 = createBoard(5);
+export const ships = createShips(shipData);
+export const shipLocations = [];
+export let gameWon = false;
 
 console.clear();
 
@@ -40,52 +39,4 @@ ships.forEach((ship) => {
 
 console.log(shipLocations);
 
-const checkShipLocations = (str) => shipLocations.includes(str);
-
-const findShip = (shipList, str) =>
-  shipList.find((ship) => ship.locations.includes(str));
-
-const isLocationAlreadyHit = (board, str) => getCell(board, str).hit;
-
-const isShipDead = (ship) => ship.lives === 0;
-
-const checkIfWon = (shipList) =>
-  shipList.filter((ship) => ship.lives > 0) === 0;
-
-let tries = 5;
-
-while (!gameWon) {
-  printBoard(board1, true);
-  let userInput = readlineSync.question("Please enter coords...\n");
-  if (userInput === "quit") {
-    gameWon = true;
-  } else {
-    if (isLocationAlreadyHit(board1, userInput)) {
-      console.log("This location has already been hit");
-    } else {
-      if (!checkShipLocations(userInput)) {
-        setCell(board1, userInput, { type: "empty", id: 0, hit: true });
-        console.log("Sorry, you missed!");
-      } else {
-        const hitShip = findShip(ships, userInput);
-        setCell(board1, userInput, {
-          type: hitShip.type,
-          id: hitShip.id,
-          hit: true,
-        });
-        console.log("You made a hit!");
-        hitShip.subtractLives(1);
-        if (isShipDead(hitShip)) {
-          const remainingShips = ships.filter((ship) => ship.lives > 0);
-          console.log(`${hitShip.name} has been sunk!`);
-          if (remainingShips.length === 0) {
-            gameWon = true;
-            console.log("Congrats! You won!");
-          } else {
-            console.log(`${remainingShips.length} remaining!`);
-          }
-        }
-      }
-    }
-  }
-}
+playTurn(board1, gameWon, ships);
