@@ -10,7 +10,7 @@ export const createBoard = (size) => {
   for (let i = 0; i < board.size; i++) {
     board.grid[alphabet[i]] = [];
     for (let j = 0; j < board.size; j++) {
-      board.grid[alphabet[i]][j] = { type: "large", id: 1, hit: true };
+      board.grid[alphabet[i]][j] = { type: "empty", id: 1, hit: false };
     }
   }
 

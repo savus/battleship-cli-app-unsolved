@@ -16,7 +16,7 @@ export const convertCoordsToNums = (str) => {
   return [col.charCodeAt() - 65, parseInt(row)];
 };
 
-export const revertCoordsToString = (col, row) => {
+export const convertCoordsToString = (col, row) => {
   return `${alphabet[col]}${row}`;
 };
 

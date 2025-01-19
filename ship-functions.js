@@ -1,12 +1,17 @@
 import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
-import { convertCoordsToNums, revertCoordsToString } from "./validations";
+import {
+  areCoordsWithinBoard,
+  convertCoordsToNums,
+  convertCoordsToString,
+} from "./validations";
 
 export const shipData = [
-  { name: "Destroyer", id: 1, type: "small", length: 4 },
-  { name: "Cruiser", id: 2, type: "small", length: 3 },
+  { name: "Destroyer", id: 1, type: "small", length: 5 },
+  { name: "Cruiser", id: 2, type: "small", length: 4 },
+  { name: "Battleship", id: 3, type: "small", length: 4 },
+  { name: "Carrier", id: 4, type: "small", length: 3 },
+  { name: "Smallest", id: 5, type: "small", length: 2 },
 ];
-
-const shipLocations = [];
 
 class Ship {
   constructor(name, id, type, length, isHorizontal) {
@@ -25,11 +30,15 @@ class Ship {
     let trackedLocations = [];
 
     for (let i = 0; i < this.length; i++) {
-      if (isCellOccupied(board, revertCoordsToString(col, row))) {
+      const string = convertCoordsToString(col, row);
+      if (
+        !areCoordsWithinBoard(board, string) ||
+        isCellOccupied(board, string)
+      ) {
         return this.placePieces(board);
       }
 
-      trackedLocations.push(revertCoordsToString(col, row));
+      trackedLocations.push(string);
       this.isHorizontal ? row++ : col++;
     }
 
@@ -42,8 +51,6 @@ class Ship {
     }
 
     this.locations.push(...trackedLocations);
-
-    console.log("success");
   }
 }
 
