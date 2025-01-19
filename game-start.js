@@ -13,6 +13,4 @@ ships.forEach((ship) => {
   shipLocations.push(...ship.locations);
 });
 
-console.log(shipLocations);
-
 playTurn(board1, ships, debug);

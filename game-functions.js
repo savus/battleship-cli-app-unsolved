@@ -19,12 +19,15 @@ export const checkIfWon = (shipList) =>
 export const playTurn = (board, shipList, debug) => {
   console.clear();
   printBoard(board, debug);
+
   let userInput = readlineSync.question(
     `Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
       debug ? "exit" : "enter"
     } debug mode]\n`
   );
+
   const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
+
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
@@ -54,7 +57,9 @@ export const playTurn = (board, shipList, debug) => {
               readlineSync.question("Congrats! You won!");
               return;
             } else {
-              readlineSync.question(`${remainingShips.length} remaining!`);
+              readlineSync.question(
+                `${remainingShips.length} ships remaining!`
+              );
             }
           }
         }
