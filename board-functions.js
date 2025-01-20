@@ -1,4 +1,4 @@
-import { alphabet } from "./game-start";
+import { alphabet, gameMode } from "./game-start";
 import { separateChars } from "./validations";
 
 export const createBoard = (size) => {
@@ -38,8 +38,10 @@ export const printBoard = (board, debug = false) => {
 
 export const printBoards = (playerList, debug = false) => {
   playerList.forEach((player) => {
-    console.log(`Player: ${player.playerNum}`);
-    console.log(player.shipLocations);
+    if (gameMode === "2-player") {
+      console.log(`Player: ${player.playerNum}`);
+    }
+    if (debug) console.log(`Player Ships: ${player.shipLocations}`);
     printBoard(player.board, debug);
   });
 };

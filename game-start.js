@@ -7,6 +7,7 @@ export const boardSize = 4;
 export let debug = false;
 export let currentPlayer = 1;
 export let gameMode = "2-player";
+const modeSelectList = ["1-player", "2-player"];
 
 const player1 = new Player("human", 1);
 const player2 = new Player("human", 2);
