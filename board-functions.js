@@ -22,8 +22,8 @@ export const printBoard = (board, debug = false) => {
 
   const displayCellType = (cell) => {
     const images = {
-      large: () => (debug ? "🟠" : cell.hit ? "🟠" : "🔳"),
-      small: () => (debug ? "🔵" : cell.hit ? "🔵" : "🔳"),
+      second: () => (debug ? "🟠" : cell.hit ? "🟠" : "🔳"),
+      first: () => (debug ? "🔵" : cell.hit ? "🔵" : "🔳"),
       empty: () => (debug ? (cell.hit ? "❗" : "🔳") : cell.hit ? "❗" : "🔳"),
     };
     return images[cell.type]();
@@ -38,10 +38,10 @@ export const printBoard = (board, debug = false) => {
 
 export const printBoards = (playerList, debug = false) => {
   playerList.forEach((player) => {
-    if (gameMode === "2-player") {
-      console.log(`Player: ${player.playerNum}`);
-    }
+    if (gameMode === "2-player") console.log(`Player: ${player.playerNum}`);
+
     if (debug) console.log(`Player Ships: ${player.shipLocations}`);
+
     printBoard(player.board, debug);
   });
 };

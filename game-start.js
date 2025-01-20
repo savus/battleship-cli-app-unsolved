@@ -1,5 +1,4 @@
-import { printBoard, printBoards } from "./board-functions";
-import { findShip, initializeAllPlayers, playerTurn } from "./game-functions";
+import { initializeAllPlayers, playerTurn } from "./game-functions";
 import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

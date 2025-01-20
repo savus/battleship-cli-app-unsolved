@@ -7,7 +7,7 @@ export class Player {
     this.type = type;
     this.playerNum = playerNum;
     this.board = createBoard(boardSize);
-    this.ships = createShips(shipData, playerNum === 1 ? "small" : "large");
+    this.ships = createShips(shipData, playerNum === 1 ? "first" : "second");
     this.shipLocations = [];
   }
 
