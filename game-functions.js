@@ -3,7 +3,8 @@ import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
 
-export const checkShipLocations = (str) => shipLocations.includes(str);
+export const checkAllShipLocations = (str, locationsArr) =>
+  locationsArr.includes(str);
 
 export const findShip = (shipList, str) =>
   shipList.find((ship) => ship.locations.includes(str));
