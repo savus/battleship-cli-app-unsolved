@@ -1,4 +1,5 @@
 import { getCell, printBoard, setCell } from "./board-functions";
+import { allShipLocations } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -18,13 +19,13 @@ export const checkIfWon = (shipList) =>
 
 export const shipIsSunk = (hitShip, shipList) => {
   if (isShipDead(hitShip)) {
-    const remainingShips = shipList.filter((ship) => ship.lives > 0);
+    const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
     readlineSync.question(`${hitShip.name} has been sunk!`);
-    if (remainingShips.length === 0) {
+    if (remainingShips === 0) {
       readlineSync.question("Congrats! You won!");
       return true;
     } else {
-      readlineSync.question(`${remainingShips.length} ships remaining!`);
+      readlineSync.question(`${remainingShips} ships remaining!`);
     }
   }
   return false;
@@ -51,7 +52,7 @@ const gameMain = (board, str, shipList) => {
     if (isLocationAlreadyHit(board, str)) {
       readlineSync.question("This location has already been hit");
     } else {
-      if (!checkShipLocations(str)) {
+      if (!checkAllShipLocations(str, allShipLocations)) {
         setCell(board, str, { type: "empty", id: 0, hit: true });
         readlineSync.question("Sorry, you missed!");
       } else {
@@ -63,7 +64,7 @@ const gameMain = (board, str, shipList) => {
   return false;
 };
 
-export const playTurn = (board, shipList, debug) => {
+export const playerTurn = (board, shipList, debug) => {
   console.clear();
   printBoard(board, debug);
 
@@ -78,11 +79,11 @@ export const playTurn = (board, shipList, debug) => {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
     debug = !debug;
-    return playTurn(board, shipList, debug);
+    return playerTurn(board, shipList, debug);
   } else {
     let gameIsOver = gameMain(board, cleanStrCopy, shipList);
     if (gameIsOver) return;
   }
 
-  return playTurn(board, shipList, debug);
+  return playerTurn(board, shipList, debug);
 };
