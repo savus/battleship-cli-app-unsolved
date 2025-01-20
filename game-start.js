@@ -27,16 +27,25 @@ class Player {
     this.ships = createShips(shipData, this.board);
     this.shipLocations = [];
   }
+
+  addShipsToBoard() {
+    this.ships.forEach((ship) => {
+      ship.placePieces(this.board);
+      this.shipLocations.push(...ship.locations);
+    });
+    console.log(this.shipLocations);
+  }
 }
 
 const player1 = new Player("human");
 
-player1.ships.forEach((ship) => ship.placePieces(player1.board));
-player1.ships.forEach((ship) => player1.shipLocations.push(...ship.locations));
+// player1.ships.forEach((ship) => ship.placePieces(player1.board));
+// player1.ships.forEach((ship) => player1.shipLocations.push(...ship.locations));
 
-const userInput = readlineSync.question("please enter coords\n");
+// const userInput = readlineSync.question("please enter coords\n");
 
-const cleanStrCopy = removeSpacesAndSpecialChars(userInput);
+// const cleanStrCopy = removeSpacesAndSpecialChars(userInput);
 
 console.clear();
+player1.addShipsToBoard();
 printBoard(player1.board, true);
