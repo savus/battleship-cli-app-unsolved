@@ -39,6 +39,7 @@ export const printBoard = (board, debug = false) => {
 export const printBoards = (playerList, debug = false) => {
   playerList.forEach((player) => {
     console.log(`Player: ${player.playerNum}`);
+    console.log(player.shipLocations);
     printBoard(player.board, debug);
   });
 };

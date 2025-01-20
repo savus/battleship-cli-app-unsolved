@@ -1,15 +1,10 @@
 import { getCell, printBoard, printBoards, setCell } from "./board-functions";
-import {
-  allShipLocations,
-  currentPlayer,
-  gameMode,
-  players,
-} from "./game-start";
+import { allShipLocations, gameMode, players } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
 
-export const checkAllShipLocations = (str, locationsArr) =>
+export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
 
 export const findShip = (shipList, str) =>
@@ -36,9 +31,8 @@ export const shipIsSunk = (hitShip, shipList) => {
   return false;
 };
 
-export const shipIsHit = (board, shipList, str) => {
+export const shipIsHit = (board, shipList, str, hitShip) => {
   let gameIsOver = false;
-  const hitShip = findShip(shipList, str);
   setCell(board, str, {
     type: hitShip.type,
     id: hitShip.id,
@@ -51,17 +45,18 @@ export const shipIsHit = (board, shipList, str) => {
   return false;
 };
 
-const gameMain = (board, str, shipList) => {
+const mainGamePlay = (board, shipList, str) => {
   let gameIsOver = false;
   if (areCoordsValid(board, str)) {
     if (isLocationAlreadyHit(board, str)) {
       readlineSync.question("This location has already been hit");
     } else {
-      if (!checkAllShipLocations(str, allShipLocations)) {
+      const hitShip = findShip(shipList, str);
+      if (!hitShip) {
         setCell(board, str, { type: "empty", id: 0, hit: true });
         readlineSync.question("Sorry, you missed!");
       } else {
-        gameIsOver = shipIsHit(board, shipList, str);
+        gameIsOver = shipIsHit(board, shipList, str, hitShip);
         if (gameIsOver) return true;
       }
     }
@@ -69,15 +64,17 @@ const gameMain = (board, str, shipList) => {
   return false;
 };
 
-export const playerTurn = (players, debug) => {
+export const playerTurn = (players, currentPlayer, debug) => {
   console.clear();
   printBoards(players, debug);
-  const activePlayer = players.find(
-    (player) => player.playerNum === currentPlayer
-  );
-  const enemyPlayer = players.find(
-    (player) => player.playerNum !== currentPlayer
-  );
+  const activePlayer =
+    gameMode === "1-player"
+      ? players[0]
+      : players.find((player) => player.playerNum === currentPlayer);
+  const enemyPlayer =
+    gameMode === "1-player"
+      ? null
+      : players.find((player) => player.playerNum !== currentPlayer);
 
   const userInputMessage =
     activePlayer.type === "human"
@@ -94,17 +91,17 @@ export const playerTurn = (players, debug) => {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
     debug = !debug;
-    return playerTurn(players, debug);
+    return playerTurn(players, currentPlayer, debug);
   } else {
-    let gameIsOver = gameMain(
+    let gameIsOver = mainGamePlay(
       gameMode === "2-player" ? enemyPlayer.board : activePlayer.board,
-      cleanStrCopy,
-      gameMode === "2-player" ? enemyPlayer.ships : activePlayer.board
+      gameMode === "2-player" ? enemyPlayer.ships : activePlayer.ships,
+      cleanStrCopy
     );
     if (gameIsOver) return;
   }
-
-  return playerTurn(players, debug);
+  currentPlayer = gameMode === "2-player" ? (currentPlayer === 1 ? 2 : 1) : 1;
+  return playerTurn(players, currentPlayer, debug);
 };
 
 export const initializeAllPlayers = () => {
