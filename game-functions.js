@@ -1,5 +1,10 @@
-import { getCell, printBoard, setCell } from "./board-functions";
-import { allShipLocations, players } from "./game-start";
+import { getCell, printBoard, printBoards, setCell } from "./board-functions";
+import {
+  allShipLocations,
+  currentPlayer,
+  gameMode,
+  players,
+} from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -64,28 +69,42 @@ const gameMain = (board, str, shipList) => {
   return false;
 };
 
-export const playerTurn = (board, shipList, debug) => {
+export const playerTurn = (players, debug) => {
   console.clear();
-  printBoard(board, debug);
-
-  let userInput = readlineSync.question(
-    `Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
-      debug ? "exit" : "enter"
-    } debug mode]\n`
+  printBoards(players, debug);
+  const activePlayer = players.find(
+    (player) => player.playerNum === currentPlayer
   );
+  const enemyPlayer = players.find(
+    (player) => player.playerNum !== currentPlayer
+  );
+
+  const userInputMessage =
+    activePlayer.type === "human"
+      ? `${
+          gameMode === "2-player" ? `Player: ${activePlayer.playerNum} ` : ""
+        }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
+          debug ? "exit" : "enter"
+        } debug mode]\n`
+      : "";
+  let userInput = readlineSync.question(userInputMessage);
   const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
 
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
     debug = !debug;
-    return playerTurn(board, shipList, debug);
+    return playerTurn(players, debug);
   } else {
-    let gameIsOver = gameMain(board, cleanStrCopy, shipList);
+    let gameIsOver = gameMain(
+      gameMode === "2-player" ? enemyPlayer.board : activePlayer.board,
+      cleanStrCopy,
+      gameMode === "2-player" ? enemyPlayer.ships : activePlayer.board
+    );
     if (gameIsOver) return;
   }
 
-  return playerTurn(board, shipList, debug);
+  return playerTurn(players, debug);
 };
 
 export const initializeAllPlayers = () => {

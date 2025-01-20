@@ -36,6 +36,13 @@ export const printBoard = (board, debug = false) => {
   return console.table(gridDisplay);
 };
 
+export const printBoards = (playerList, debug = false) => {
+  playerList.forEach((player) => {
+    console.log(`Player: ${player.playerNum}`);
+    printBoard(player.board, debug);
+  });
+};
+
 export const getCell = (board, strCoords) => {
   const [col, row] = separateChars(strCoords);
   return board.grid[col][row];
