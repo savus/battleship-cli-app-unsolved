@@ -11,11 +11,6 @@ export const readlineSync = require("readline-sync");
 
 export const isGameTwoPlayers = () => gameMode === "2-player";
 
-export const getActivePlayer = () =>
-  isGameTwoPlayers()
-    ? players.find((player) => player.playerNum === currentPlayer)
-    : players[0];
-
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
 
@@ -124,6 +119,7 @@ export const playerTurn = (players, currentPlayer, debug) => {
       whichShipsToCheck,
       cleanStrCopy
     );
+
     if (gameIsOver) return;
   }
   currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
