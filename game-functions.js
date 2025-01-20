@@ -1,10 +1,20 @@
 import { getCell, printBoard, printBoards, setCell } from "./board-functions";
-import { allShipLocations, gameMode, players } from "./game-start";
+import {
+  allShipLocations,
+  currentPlayer,
+  gameMode,
+  players,
+} from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
 
 export const isGameTwoPlayers = () => gameMode === "2-player";
+
+export const getActivePlayer = () =>
+  isGameTwoPlayers()
+    ? players.find((player) => player.playerNum === currentPlayer)
+    : players[0];
 
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
