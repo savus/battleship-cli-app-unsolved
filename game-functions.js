@@ -1,5 +1,5 @@
 import { getCell, printBoard, setCell } from "./board-functions";
-import { allShipLocations } from "./game-start";
+import { allShipLocations, players } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -86,4 +86,11 @@ export const playerTurn = (board, shipList, debug) => {
   }
 
   return playerTurn(board, shipList, debug);
+};
+
+export const initializeAllPlayers = () => {
+  players.forEach((player) => {
+    player.addShipsToBoard();
+    allShipLocations.push(...player.shipLocations);
+  });
 };

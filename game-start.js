@@ -1,26 +1,21 @@
 import { printBoard } from "./board-functions";
-import {
-  checkAllShipLocations,
-  findShip,
-  isLocationAlreadyHit,
-  playerTurn,
-  readlineSync,
-} from "./game-functions";
+import { initializeAllPlayers, playerTurn } from "./game-functions";
 import { Player } from "./player-functions";
-import { removeSpacesAndSpecialChars } from "./validations";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export const boardSize = 8;
 export let debug = false;
 
-const player1 = new Player("human");
+const player1 = new Player("human", 1);
+const player2 = new Player("human", 2);
 
-const players = [player1];
+export const players = [player1, player2];
 
 export const allShipLocations = [];
 
-player1.addShipsToBoard();
+initializeAllPlayers();
 
-players.forEach((player) => allShipLocations.push(...player.shipLocations));
-
-playerTurn(player1.board, player1.ships, false);
+console.log("Player1");
+printBoard(player1.board, true);
+console.log("Player2");
+printBoard(player2.board, true);

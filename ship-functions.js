@@ -6,8 +6,8 @@ import {
 } from "./validations";
 
 export const shipData = [
-  { name: "Destroyer", id: 1, type: "small", length: 2 },
-  { name: "Submarine", id: 2, type: "small", length: 3 },
+  { name: "Destroyer", id: 1, length: 2 },
+  { name: "Submarine", id: 2, length: 3 },
   // { name: "Cruiser", id: 3, type: "small", length: 3 },
   // { name: "Battleship", id: 4, type: "small", length: 4 },
   // { name: "Carrier", id: 5, type: "small", length: 5 },
@@ -58,9 +58,9 @@ class Ship {
   }
 }
 
-export const createShips = (data) => {
+export const createShips = (data, type) => {
   return data.map((ship) => {
-    const { name, id, type, length } = ship;
+    const { name, id, length } = ship;
     const horizontal = Math.floor(Math.random() * 2) === 0 ? true : false;
     return new Ship(name, id, type, length, horizontal);
   });
