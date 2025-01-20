@@ -4,6 +4,8 @@ import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
 
+export const isGameTwoPlayers = () => gameMode === "2-player";
+
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
 
@@ -65,12 +67,13 @@ const mainGamePlay = (board, shipList, str) => {
 };
 
 export const playerTurn = (players, currentPlayer, debug) => {
-  console.clear();
-  printBoards(players, debug);
+  const gameIsTwoPlayers = isGameTwoPlayers();
+
   const activePlayer =
     gameMode === "1-player"
       ? players[0]
       : players.find((player) => player.playerNum === currentPlayer);
+
   const enemyPlayer =
     gameMode === "1-player"
       ? null
@@ -79,12 +82,17 @@ export const playerTurn = (players, currentPlayer, debug) => {
   const userInputMessage =
     activePlayer.type === "human"
       ? `${
-          gameMode === "2-player" ? `Player: ${activePlayer.playerNum} ` : ""
+          gameIsTwoPlayers ? `Player: ${activePlayer.playerNum} ` : ""
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
           debug ? "exit" : "enter"
         } debug mode]\n`
       : "";
+
+  console.clear();
+  printBoards(players, debug);
+
   let userInput = readlineSync.question(userInputMessage);
+
   const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
 
   if (cleanStrCopy.toLowerCase() === "quit") {
@@ -93,14 +101,22 @@ export const playerTurn = (players, currentPlayer, debug) => {
     debug = !debug;
     return playerTurn(players, currentPlayer, debug);
   } else {
+    const whichBoardToCheck = gameIsTwoPlayers
+      ? enemyPlayer.board
+      : activePlayer.board;
+
+    const whichShipsToCheck = gameIsTwoPlayers
+      ? enemyPlayer.ships
+      : activePlayer.ships;
+
     let gameIsOver = mainGamePlay(
-      gameMode === "2-player" ? enemyPlayer.board : activePlayer.board,
-      gameMode === "2-player" ? enemyPlayer.ships : activePlayer.ships,
+      whichBoardToCheck,
+      whichShipsToCheck,
       cleanStrCopy
     );
     if (gameIsOver) return;
   }
-  currentPlayer = gameMode === "2-player" ? (currentPlayer === 1 ? 2 : 1) : 1;
+  currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
   return playerTurn(players, currentPlayer, debug);
 };
 

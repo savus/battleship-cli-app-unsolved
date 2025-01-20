@@ -1,3 +1,4 @@
+import { isGameTwoPlayers } from "./game-functions";
 import { alphabet, gameMode } from "./game-start";
 import { separateChars } from "./validations";
 
@@ -38,7 +39,7 @@ export const printBoard = (board, debug = false) => {
 
 export const printBoards = (playerList, debug = false) => {
   playerList.forEach((player) => {
-    if (gameMode === "2-player") console.log(`Player: ${player.playerNum}`);
+    if (isGameTwoPlayers()) console.log(`Player: ${player.playerNum}`);
 
     if (debug) console.log(`Player Ships: ${player.shipLocations}`);
 
