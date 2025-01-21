@@ -1,5 +1,5 @@
 import { isGameTwoPlayers } from "./game-functions";
-import { alphabet } from "./game-start";
+import { alphabet, textColors } from "./game-start";
 import { separateChars } from "./validations";
 
 export const createBoard = (size) => {
@@ -40,9 +40,22 @@ export const printBoard = (board, debug = false) => {
 
 export const printBoards = (playerList, mode, debugMode = false) => {
   playerList.forEach((player) => {
-    if (isGameTwoPlayers(mode)) console.log(`Player: ${player.playerNum}`);
+    if (isGameTwoPlayers(mode)) {
+      const isPlayerOne = player.playerNum === 1;
+      const boardMessage = `${
+        isPlayerOne ? textColors["green"] : textColors["cyan"]
+      }Player: ${player.playerNum} ${
+        isPlayerOne ? textColors["green"] : textColors["cyan"]
+      }${textColors["default"]}`;
+      console.log(boardMessage);
+    }
 
-    if (debugMode) console.log(`Player Ships: ${player.shipLocations}`);
+    if (debugMode)
+      console.log(
+        `Player Ships: ${textColors["magenta"]}${JSON.stringify(
+          player.shipLocations
+        )}${textColors["default"]}\n`
+      );
 
     printBoard(player.board, debugMode);
   });

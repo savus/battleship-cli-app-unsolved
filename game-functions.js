@@ -5,7 +5,7 @@ import {
   printBoards,
   setCell,
 } from "./board-functions";
-import { allShipLocations, alphabet, gameMode } from "./game-start";
+import { allShipLocations, alphabet, gameMode, textColors } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -45,16 +45,20 @@ export const checkIfWon = (shipList) =>
 export const shipIsSunk = (hitShip, shipList, activePlayer) => {
   if (isShipDead(hitShip)) {
     const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
-    readlineSync.question(`${hitShip.name} has been sunk!`);
+    readlineSync.question(
+      `${textColors["cyan"]}${hitShip.name} has been sunk!${textColors["default"]}`
+    );
     if (remainingShips === 0) {
       const gameMessage =
         activePlayer.type === "human"
-          ? "Congrats! You won!"
-          : "Too bad! The computer won!";
+          ? `${textColors["green"]}Congrats! You won!${textColors["default"]}`
+          : `${textColors["red"]}Too bad! The computer won!${textColors["default"]}`;
       readlineSync.question(gameMessage);
       return true;
     } else {
-      readlineSync.question(`${remainingShips} ships remaining!`);
+      readlineSync.question(
+        `${textColors["cyan"]}${remainingShips} ships remaining${textColors["default"]}!`
+      );
     }
   }
   return false;
@@ -70,8 +74,8 @@ export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
 
   const gameMessage =
     activePlayer.type === "human"
-      ? "You made a hit!"
-      : "The computer scored a hit!";
+      ? `${textColors["green"]}You made a hit!${textColors["default"]}`
+      : `${textColors["red"]}The computer scored a hit!${textColors["default"]}`;
 
   readlineSync.question(gameMessage);
   hitShip.subtractLives(1);
@@ -83,14 +87,16 @@ export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
 const mainGamePlay = (board, shipList, activePlayer, str) => {
   let gameIsOver = false;
   if (isLocationAlreadyHit(board, str)) {
-    readlineSync.question("This location has already been hit");
+    readlineSync.question(
+      `${textColors["cyan"]}This location has already been hit${textColors["default"]}`
+    );
   } else {
     const hitShip = findShip(shipList, str);
     if (!hitShip) {
       const gameMessage =
         activePlayer.type == "human"
-          ? "Sorry, you missed!"
-          : "The computer missed";
+          ? `${textColors["red"]}Sorry, you missed!${textColors["default"]}`
+          : `${textColors["cyan"]}The computer missed${textColors["default"]}`;
 
       setCell(board, str, { type: "empty", id: 0, hit: true });
       readlineSync.question(gameMessage);
@@ -117,7 +123,9 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
   const userInputMessage =
     activePlayer.type === "human"
       ? `${
-          gameIsTwoPlayers ? `Player: ${activePlayer.playerNum} ` : ""
+          gameIsTwoPlayers
+            ? `${textColors["green"]}Player: ${activePlayer.playerNum} ${textColors["default"]}`
+            : ""
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
           debugMode ? "exit" : "enter"
         } debug mode]\n`
