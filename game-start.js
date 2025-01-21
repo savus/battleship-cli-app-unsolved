@@ -26,60 +26,62 @@ export const players = [];
 
 export const allShipLocations = [];
 
-const getGameModeInput = () => {
-  let userInput = readlineSync.question(
-    "Which game mode would you like to play?"
-  );
-};
-
 const getUserSelection = (message, list) => {
   console.log(list);
   const userInput = readlineSync.question(message);
-  const onlyNumbers = userInput.replace(/[^\d]/gi, "");
+  if (userInput === "quit") return false;
 
-  if (userInput === "quit") return;
-
-  if (list[onlyNumbers]) return list[onlyNumbers];
+  if (/^\d+$/gi.test(userInput) && list[userInput]) return list[userInput];
 
   console.log("Invalid choice");
   return getUserSelection(message, list);
 };
 
+const shouldRunOnePlayerGame = (gameMode, playerList, currentPlayerNum) => {
+  if (gameMode === "1-player") {
+    playerList.push(new Player("human"));
+    initializeAllPlayers(playerList);
+    playGame(playerList, currentPlayerNum, false);
+  }
+};
+
 const runSelectionMenus = (gameMode) => {
-  let modeSelect = readlineSync.keyInSelect(
-    modeSelectMenu,
-    "Which game mode would you like to play?"
+  let gameModeSelection = getUserSelection(
+    "Please choose what game mode you would like to play\n",
+    modeSelectMenu
   );
 
-  if (modeSelect === -1) {
+  if (!gameModeSelection) {
     console.log("Goodbye!");
     return;
-  } else {
-    gameMode = modeSelectMenu[modeSelect];
   }
 
-  if (modeSelectMenu[modeSelect] === "1-player") {
-    players[0] = new Player("human");
-    initializeAllPlayers(players);
-    playGame(players, currentPlayer, false);
-  }
+  gameMode = gameModeSelection;
 
-  if (modeSelectMenu[modeSelect] === "2-player") {
-    console.clear();
-    let playerSelect = readlineSync.keyInSelect(
-      playerSelectMenu,
-      "Who would you like to be your opponent?"
-    );
+  shouldRunOnePlayerGame(gameMode, players, currentPlayer);
 
-    if (playerSelect === -1) {
-      return runSelectionMenus(gameMode);
-    }
+  // if (gameMode === "1-player") {
+  //   players.push(new Player("human"));
+  //   initializeAllPlayers(players);
+  //   playGame(players, currentPlayer, false);
+  // }
 
-    players.push(new Player("human", 1));
-    players.push(new Player(playerSelectMenu[playerSelect], 2));
-    initializeAllPlayers(players);
-    playGame(players, currentPlayer, gameMode, false);
-  }
+  // if (modeSelectMenu[modeSelect] === "2-player") {
+  //   console.clear();
+  //   let playerSelect = readlineSync.keyInSelect(
+  //     playerSelectMenu,
+  //     "Who would you like to be your opponent?"
+  //   );
+
+  //   if (playerSelect === -1) {
+  //     return runSelectionMenus(gameMode);
+  //   }
+
+  //   players.push(new Player("human", 1));
+  //   players.push(new Player(playerSelectMenu[playerSelect], 2));
+  //   initializeAllPlayers(players);
+  //   playGame(players, currentPlayer, gameMode, false);
+  // }
 };
 
 const beginGame = (mode) => {
@@ -95,7 +97,8 @@ const beginGame = (mode) => {
 console.clear();
 // beginGame(gameMode);
 
-console.log(getUserSelection("Please select item\n", ["Moose", "Bat", "Mice"]));
+runSelectionMenus(gameMode);
+
 // initializeAllPlayers(players);
 
 // playGame(players, currentPlayer, true);
