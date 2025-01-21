@@ -9,7 +9,7 @@ import {
 export const shipData = [
   { name: "Destroyer", id: 1, length: 2 },
   { name: "Submarine", id: 2, length: 3 },
-  // { name: "Cruiser", id: 3, length: 3 },
+  { name: "Cruiser", id: 3, length: 3 },
   // { name: "Battleship", id: 4, length: 4 },
   // { name: "Carrier", id: 5, length: 5 },
 ];

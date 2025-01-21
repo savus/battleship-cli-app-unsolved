@@ -121,7 +121,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
           debugMode ? "exit" : "enter"
         } debug mode]\n`
-      : "Computer is thinking\n";
+      : "Computer is thinking";
 
   console.clear();
   printBoards(playerList, gameMode, debugMode);
@@ -132,8 +132,6 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     activePlayer.type === "human"
       ? removeSpacesAndSpecialChars(userInput).toUpperCase()
       : getComputersDecision(opposingPlayer.board);
-
-  console.log(cleanStrCopy);
 
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
