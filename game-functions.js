@@ -1,5 +1,11 @@
-import { getCell, printBoards, setCell } from "./board-functions";
-import { allShipLocations, gameMode } from "./game-start";
+import {
+  getCell,
+  getRandomCoords,
+  isCellOccupied,
+  printBoards,
+  setCell,
+} from "./board-functions";
+import { allShipLocations, alphabet, gameMode } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -15,6 +21,13 @@ export const getOpposingPlayer = (mode, playerList, currentPlayerNum) =>
   mode === "2-player"
     ? playerList.find((player) => player.playerNum !== currentPlayerNum)
     : null;
+
+const getComputersDecision = (board) => {
+  const randomCoords = getRandomCoords(board, alphabet);
+  if (isLocationAlreadyHit(board, randomCoords))
+    return getComputersDecision(board);
+  return randomCoords;
+};
 
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
@@ -54,10 +67,12 @@ export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
     id: hitShip.id,
     hit: true,
   });
+
   const gameMessage =
     activePlayer.type === "human"
       ? "You made a hit!"
       : "The computer scored a hit!";
+
   readlineSync.question(gameMessage);
   hitShip.subtractLives(1);
   gameIsOver = shipIsSunk(hitShip, shipList, activePlayer);
@@ -76,6 +91,7 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
         activePlayer.type == "human"
           ? "Sorry, you missed!"
           : "The computer missed";
+
       setCell(board, str, { type: "empty", id: 0, hit: true });
       readlineSync.question(gameMessage);
     } else {
@@ -92,6 +108,12 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
 
   const activePlayer = getActivePlayer(gameMode, playerList, currentPlayerNum);
 
+  const opposingPlayer = getOpposingPlayer(
+    gameMode,
+    playerList,
+    currentPlayerNum
+  );
+
   const userInputMessage =
     activePlayer.type === "human"
       ? `${
@@ -106,7 +128,12 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
 
   let userInput = readlineSync.question(userInputMessage);
 
-  const cleanStrCopy = removeSpacesAndSpecialChars(userInput).toUpperCase();
+  const cleanStrCopy =
+    activePlayer.type === "human"
+      ? removeSpacesAndSpecialChars(userInput).toUpperCase()
+      : getComputersDecision(opposingPlayer.board);
+
+  console.log(cleanStrCopy);
 
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
@@ -114,12 +141,6 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     debugMode = !debugMode;
     return playGame(playerList, currentPlayerNum, debugMode);
   } else {
-    const opposingPlayer = getOpposingPlayer(
-      gameMode,
-      playerList,
-      currentPlayerNum
-    );
-
     const whichBoardToCheck = gameIsTwoPlayers
       ? opposingPlayer.board
       : activePlayer.board;
