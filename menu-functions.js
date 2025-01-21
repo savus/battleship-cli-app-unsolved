@@ -3,11 +3,12 @@ import { textColors } from "./game-start";
 import { Player } from "./player-functions";
 
 export const getUserSelection = (message, list) => {
+  console.clear();
   console.log(list.map((item, index) => `[${index + 1}] ${item}`));
   const userInput = readlineSync.question(
     `${message}...  Press [${textColors["cyan"]}${list.map(
       (_item, index) => index + 1
-    )}${textColors["default"]}]\n`
+    )}${textColors["default"]}] or type "quit" to exit.\n`
   );
   if (userInput === "quit") return false;
 
@@ -32,7 +33,8 @@ export const shouldRunOnePlayerGame = (
 export const shouldRunTwoPlayerGame = (
   gameMode,
   playerList,
-  playerSelectionList
+  playerSelectionList,
+  currentPlayerNum
 ) => {
   if (gameMode === "2-player") {
     console.clear();
@@ -46,7 +48,7 @@ export const shouldRunTwoPlayerGame = (
     playerList.push(new Player(playerSelect, 2));
 
     initializeAllPlayers(playerList);
-    return playGame(playerList, currentPlayer, gameMode, false);
+    return playGame(playerList, currentPlayerNum, gameMode, false);
   }
 };
 
@@ -73,7 +75,14 @@ export const runSelectionMenus = (
 
   shouldRunOnePlayerGame(gameMode, playerList, currentPlayerNum);
 
-  if (!shouldRunTwoPlayerGame(gameMode, playerList, playerSelectMenu)) {
+  if (
+    !shouldRunTwoPlayerGame(
+      gameMode,
+      playerList,
+      playerSelectMenu,
+      currentPlayerNum
+    )
+  ) {
     console.log("Goodbye!");
     return;
   }

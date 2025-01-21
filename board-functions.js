@@ -39,6 +39,11 @@ export const printBoard = (board, debug = false) => {
 };
 
 export const printBoards = (playerList, mode, debugMode = false) => {
+  console.log("=".repeat(100));
+  console.log(
+    `${textColors["cyan"]}${mode.toUpperCase()} Mode!${textColors["default"]}`
+  );
+  console.log("=".repeat(100));
   playerList.forEach((player) => {
     if (isGameTwoPlayers(mode)) {
       const isPlayerOne = player.playerNum === 1;

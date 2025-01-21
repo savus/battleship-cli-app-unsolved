@@ -1,6 +1,5 @@
-import { initializeAllPlayers, playGame, readlineSync } from "./game-functions";
+import { readlineSync } from "./game-functions";
 import { runSelectionMenus } from "./menu-functions";
-import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export const boardSize = 3;
@@ -27,6 +26,7 @@ const beginGame = (mode) => {
   );
   console.log("=".repeat(100), "\n");
 
+  readlineSync.question("Press any key to continue ...");
   runSelectionMenus(
     mode,
     players,
@@ -37,16 +37,4 @@ const beginGame = (mode) => {
 };
 
 console.clear();
-// beginGame(gameMode);
-
-runSelectionMenus(
-  gameMode,
-  players,
-  currentPlayer,
-  modeSelectMenu,
-  playerSelectMenu
-);
-
-// initializeAllPlayers(players);
-
-// playGame(players, currentPlayer, true);
+beginGame(gameMode);

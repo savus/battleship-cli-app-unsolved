@@ -38,6 +38,13 @@ export const isShipDead = (ship) => ship.lives === 0;
 export const checkIfWon = (shipList) =>
   shipList.filter((ship) => ship.lives > 0) === 0;
 
+const displayEndGameMessage = (gameMessage) => {
+  console.clear();
+  console.log("=".repeat(100));
+  console.log("💠".repeat(6), gameMessage, "💠".repeat(6));
+  console.log("=".repeat(100));
+};
+
 export const shipIsSunk = (hitShip, shipList, activePlayer) => {
   if (isShipDead(hitShip)) {
     const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
@@ -49,7 +56,8 @@ export const shipIsSunk = (hitShip, shipList, activePlayer) => {
         activePlayer.type === "human"
           ? `${textColors["green"]}Congrats! You won!${textColors["default"]}`
           : `${textColors["red"]}Too bad! The computer won!${textColors["default"]}`;
-      readlineSync.question(gameMessage);
+
+      displayEndGameMessage(gameMessage);
       return true;
     } else {
       readlineSync.question(
