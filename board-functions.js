@@ -37,13 +37,13 @@ export const printBoard = (board, debug = false) => {
   return console.table(gridDisplay);
 };
 
-export const printBoards = (playerList, debug = false) => {
+export const printBoards = (playerList, mode, debugMode = false) => {
   playerList.forEach((player) => {
-    if (isGameTwoPlayers(gameMode)) console.log(`Player: ${player.playerNum}`);
+    if (isGameTwoPlayers(mode)) console.log(`Player: ${player.playerNum}`);
 
-    if (debug) console.log(`Player Ships: ${player.shipLocations}`);
+    if (debugMode) console.log(`Player Ships: ${player.shipLocations}`);
 
-    printBoard(player.board, debug);
+    printBoard(player.board, debugMode);
   });
 };
 
@@ -62,8 +62,8 @@ export const setCell = (board, strCoords, cell) => {
   return (board.grid[col][row] = cell);
 };
 
-export const getRandomCoords = (board) => {
-  let yCoord = alphabet[Math.floor(Math.random() * board.size)];
+export const getRandomCoords = (board, letters) => {
+  let yCoord = letters[Math.floor(Math.random() * board.size)];
   let xCoord = Math.floor(Math.random() * board.size);
   return `${yCoord}${xCoord}`;
 };

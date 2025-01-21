@@ -1,4 +1,5 @@
 import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
+import { alphabet } from "./game-start";
 import {
   areCoordsWithinBoard,
   convertCoordsToNums,
@@ -25,12 +26,12 @@ class Ship {
   }
 
   placePieces(board) {
-    let startingPoint = getRandomCoords(board);
+    let startingPoint = getRandomCoords(board, alphabet);
     let [col, row] = convertCoordsToNums(startingPoint);
     let trackedLocations = [];
 
     for (let i = 0; i < this.length; i++) {
-      const string = convertCoordsToString(col, row);
+      const string = convertCoordsToString(col, row, alphabet);
       if (
         !areCoordsWithinBoard(board, string) ||
         isCellOccupied(board, string)

@@ -17,8 +17,8 @@ export const convertCoordsToNums = (str) => {
   return [col.charCodeAt() - 65, parseInt(row)];
 };
 
-export const convertCoordsToString = (col, row) => {
-  return `${alphabet[col]}${row}`;
+export const convertCoordsToString = (col, row, letters) => {
+  return `${letters[col]}${row}`;
 };
 
 export const areCoordsWithinBoard = (board, str) => {

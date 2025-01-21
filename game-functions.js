@@ -11,13 +11,10 @@ export const readlineSync = require("readline-sync");
 
 export const isGameTwoPlayers = (mode) => mode === "2-player";
 
-export const getActivePlayer = (mode, playerList, currentPlayerNum) => {
-  if (mode === "2-player") {
-    return playerList.find((player) => player.playerNum === currentPlayerNum);
-  } else {
-    return playerList[0];
-  }
-};
+export const getActivePlayer = (mode, playerList, currentPlayerNum) =>
+  mode === "2-player"
+    ? playerList.find((player) => player.playerNum === currentPlayerNum)
+    : playerList[0];
 
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
@@ -102,7 +99,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
       : "";
 
   console.clear();
-  printBoards(playerList, debugMode);
+  printBoards(playerList, gameMode, debugMode);
 
   let userInput = readlineSync.question(userInputMessage);
 

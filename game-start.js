@@ -2,7 +2,7 @@ import { initializeAllPlayers, playGame } from "./game-functions";
 import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-export const boardSize = 4;
+export const boardSize = 3;
 export let debug = false;
 export let currentPlayer = 1;
 export let gameMode = "2-player";
