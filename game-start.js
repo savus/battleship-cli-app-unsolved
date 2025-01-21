@@ -15,6 +15,6 @@ export const players = [player1, player2];
 
 export const allShipLocations = [];
 
-initializeAllPlayers();
+initializeAllPlayers(players);
 
 playGame(players, currentPlayer, true);

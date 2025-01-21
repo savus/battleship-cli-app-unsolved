@@ -11,6 +11,14 @@ export const readlineSync = require("readline-sync");
 
 export const isGameTwoPlayers = (mode) => mode === "2-player";
 
+export const getActivePlayer = (mode, playerList, currentPlayerNum) => {
+  if (mode === "2-player") {
+    return playerList.find((player) => player.playerNum === currentPlayerNum);
+  } else {
+    return playerList[0];
+  }
+};
+
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
 
@@ -71,30 +79,30 @@ const mainGamePlay = (board, shipList, str) => {
   return false;
 };
 
-export const playGame = (players, currentPlayer, debug) => {
+export const playGame = (playerList, currentPlayerNum, debugMode) => {
   const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
 
-  const activePlayer =
-    gameMode === "1-player"
-      ? players[0]
-      : players.find((player) => player.playerNum === currentPlayer);
+  const activePlayer = getActivePlayer(gameMode, playerList, currentPlayerNum);
+  // gameMode === "1-player"
+  //   ? players[0]
+  //   : players.find((player) => player.playerNum === currentPlayer);
 
   const enemyPlayer =
     gameMode === "1-player"
       ? null
-      : players.find((player) => player.playerNum !== currentPlayer);
+      : playerList.find((player) => player.playerNum !== currentPlayerNum);
 
   const userInputMessage =
     activePlayer.type === "human"
       ? `${
           gameIsTwoPlayers ? `Player: ${activePlayer.playerNum} ` : ""
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
-          debug ? "exit" : "enter"
+          debugMode ? "exit" : "enter"
         } debug mode]\n`
       : "";
 
   console.clear();
-  printBoards(players, debug);
+  printBoards(playerList, debugMode);
 
   let userInput = readlineSync.question(userInputMessage);
 
@@ -103,8 +111,8 @@ export const playGame = (players, currentPlayer, debug) => {
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
-    debug = !debug;
-    return playGame(players, currentPlayer, debug);
+    debugMode = !debugMode;
+    return playGame(playerList, currentPlayerNum, debugMode);
   } else {
     const whichBoardToCheck = gameIsTwoPlayers
       ? enemyPlayer.board
@@ -122,12 +130,12 @@ export const playGame = (players, currentPlayer, debug) => {
 
     if (gameIsOver) return;
   }
-  currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
-  return playGame(players, currentPlayer, debug);
+  currentPlayerNum = gameIsTwoPlayers ? (currentPlayerNum === 1 ? 2 : 1) : 1;
+  return playGame(playerList, currentPlayerNum, debugMode);
 };
 
-export const initializeAllPlayers = () => {
-  players.forEach((player) => {
+export const initializeAllPlayers = (playerList) => {
+  playerList.forEach((player) => {
     player.addShipsToBoard();
     allShipLocations.push(...player.shipLocations);
   });
