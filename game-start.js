@@ -7,13 +7,12 @@ import {
 import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-export const boardSize = 5;
+export const boardSize = 3;
 const modeSelectMenu = ["1-player", "2-player"];
 const playerSelectMenu = ["human", "computer"];
 export let debug = false;
 export let currentPlayer = 1;
 export let gameMode = "";
-let skipIntro = false;
 
 export const textColors = {
   red: "\x1b[31m",
@@ -23,15 +22,11 @@ export const textColors = {
   default: "\x1b[0m",
 };
 
-const player1 = new Player("human", 1);
-const player2 = new Player("computer", 2);
-
 export const players = [];
 
 export const allShipLocations = [];
 
 const runSelectionMenus = (gameMode) => {
-  console.clear();
   let modeSelect = readlineSync.keyInSelect(
     modeSelectMenu,
     "Which game mode would you like to play?"
@@ -69,14 +64,16 @@ const runSelectionMenus = (gameMode) => {
 };
 
 const beginGame = (mode) => {
-  console.log("\n", "=".repeat(100), "\n");
-  readlineSync.question(
+  console.log("=".repeat(100), "\n");
+  console.log(
     `${textColors["cyan"]}Hello! Welcome to my mini-battleship game! ${textColors["default"]}\n`
   );
+  console.log("=".repeat(100), "\n");
 
   runSelectionMenus(mode);
 };
 
+console.clear();
 beginGame(gameMode);
 // initializeAllPlayers(players);
 
