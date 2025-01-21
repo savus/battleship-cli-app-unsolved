@@ -16,6 +16,11 @@ export const getActivePlayer = (mode, playerList, currentPlayerNum) =>
     ? playerList.find((player) => player.playerNum === currentPlayerNum)
     : playerList[0];
 
+export const getOpposingPlayer = (mode, playerList, currentPlayerNum) =>
+  mode === "2-player"
+    ? playerList.find((player) => player.playerNum !== currentPlayerNum)
+    : null;
+
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
 
@@ -80,14 +85,6 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
   const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
 
   const activePlayer = getActivePlayer(gameMode, playerList, currentPlayerNum);
-  // gameMode === "1-player"
-  //   ? players[0]
-  //   : players.find((player) => player.playerNum === currentPlayer);
-
-  const enemyPlayer =
-    gameMode === "1-player"
-      ? null
-      : playerList.find((player) => player.playerNum !== currentPlayerNum);
 
   const userInputMessage =
     activePlayer.type === "human"
@@ -111,12 +108,17 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     debugMode = !debugMode;
     return playGame(playerList, currentPlayerNum, debugMode);
   } else {
+    const opposingPlayer = getOpposingPlayer(
+      gameMode,
+      playerList,
+      currentPlayerNum
+    );
     const whichBoardToCheck = gameIsTwoPlayers
-      ? enemyPlayer.board
+      ? opposingPlayer.board
       : activePlayer.board;
 
     const whichShipsToCheck = gameIsTwoPlayers
-      ? enemyPlayer.ships
+      ? opposingPlayer.ships
       : activePlayer.ships;
 
     let gameIsOver = mainGamePlay(
