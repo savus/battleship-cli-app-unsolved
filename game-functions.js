@@ -29,12 +29,16 @@ export const isShipDead = (ship) => ship.lives === 0;
 export const checkIfWon = (shipList) =>
   shipList.filter((ship) => ship.lives > 0) === 0;
 
-export const shipIsSunk = (hitShip, shipList) => {
+export const shipIsSunk = (hitShip, shipList, activePlayer) => {
   if (isShipDead(hitShip)) {
     const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
     readlineSync.question(`${hitShip.name} has been sunk!`);
     if (remainingShips === 0) {
-      readlineSync.question("Congrats! You won!");
+      const gameMessage =
+        activePlayer.type === "human"
+          ? "Congrats! You won!"
+          : "Too bad! The computer won!";
+      readlineSync.question(gameMessage);
       return true;
     } else {
       readlineSync.question(`${remainingShips} ships remaining!`);
@@ -43,31 +47,39 @@ export const shipIsSunk = (hitShip, shipList) => {
   return false;
 };
 
-export const shipIsHit = (board, shipList, str, hitShip) => {
+export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
   let gameIsOver = false;
   setCell(board, str, {
     type: hitShip.type,
     id: hitShip.id,
     hit: true,
   });
-  readlineSync.question("You made a hit!");
+  const gameMessage =
+    activePlayer.type === "human"
+      ? "You made a hit!"
+      : "The computer scored a hit!";
+  readlineSync.question(gameMessage);
   hitShip.subtractLives(1);
-  gameIsOver = shipIsSunk(hitShip, shipList);
+  gameIsOver = shipIsSunk(hitShip, shipList, activePlayer);
   if (gameIsOver) return true;
   return false;
 };
 
-const mainGamePlay = (board, shipList, str) => {
+const mainGamePlay = (board, shipList, activePlayer, str) => {
   let gameIsOver = false;
   if (isLocationAlreadyHit(board, str)) {
     readlineSync.question("This location has already been hit");
   } else {
     const hitShip = findShip(shipList, str);
     if (!hitShip) {
+      const gameMessage =
+        activePlayer.type == "human"
+          ? "Sorry, you missed!"
+          : "The computer missed";
       setCell(board, str, { type: "empty", id: 0, hit: true });
-      readlineSync.question("Sorry, you missed!");
+      readlineSync.question(gameMessage);
     } else {
-      gameIsOver = shipIsHit(board, shipList, str, hitShip);
+      gameIsOver = shipIsHit(board, shipList, activePlayer, str, hitShip);
       if (gameIsOver) return true;
     }
   }
@@ -87,7 +99,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
           debugMode ? "exit" : "enter"
         } debug mode]\n`
-      : "";
+      : "Computer is thinking\n";
 
   console.clear();
   printBoards(playerList, gameMode, debugMode);
@@ -122,6 +134,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     let gameIsOver = mainGamePlay(
       whichBoardToCheck,
       whichShipsToCheck,
+      activePlayer,
       cleanStrCopy
     );
 

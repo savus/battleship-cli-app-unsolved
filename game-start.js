@@ -9,7 +9,7 @@ export let gameMode = "2-player";
 const modeSelectList = ["1-player", "2-player"];
 
 const player1 = new Player("human", 1);
-const player2 = new Player("human", 2);
+const player2 = new Player("computer", 2);
 
 export const players = [player1, player2];
 
