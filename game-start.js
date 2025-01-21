@@ -22,11 +22,16 @@ export const players = [];
 export const allShipLocations = [];
 
 const getUserSelection = (message, list) => {
-  console.log(list);
-  const userInput = readlineSync.question(message);
+  console.log(list.map((item, index) => `[${index + 1}] ${item}`));
+  const userInput = readlineSync.question(
+    `${message}...  Press [${textColors["cyan"]}${list.map(
+      (_item, index) => index + 1
+    )}${textColors["default"]}]\n`
+  );
   if (userInput === "quit") return false;
 
-  if (/^\d+$/gi.test(userInput) && list[userInput]) return list[userInput];
+  if (/^\d+$/gi.test(userInput) && list[userInput - 1])
+    return list[userInput - 1];
 
   console.log("Invalid choice");
   return getUserSelection(message, list);
@@ -35,7 +40,7 @@ const getUserSelection = (message, list) => {
 const shouldRunOnePlayerGame = (gameMode, playerList, currentPlayerNum) => {
   if (gameMode === "1-player") {
     initializeAllPlayers(playerList);
-    playGame(playerList, currentPlayerNum, false);
+    return playGame(playerList, currentPlayerNum, false);
   }
 };
 
@@ -43,22 +48,22 @@ const shouldRunTwoPlayerGame = (gameMode, playerList, playerSelectionList) => {
   if (gameMode === "2-player") {
     console.clear();
     let playerSelect = getUserSelection(
-      "Who would you like to be your opponent\n",
+      "Who would you like to be your opponent",
       playerSelectionList
     );
 
-    if (playerSelect === "quit") return false;
+    if (!playerSelect) return false;
 
     playerList.push(new Player(playerSelect, 2));
 
     initializeAllPlayers(players);
-    playGame(players, currentPlayer, gameMode, false);
+    return playGame(players, currentPlayer, gameMode, false);
   }
 };
 
-const runSelectionMenus = (gameMode) => {
+const runSelectionMenus = (gameMode, playerList, currentPlayerNum) => {
   let gameModeSelection = getUserSelection(
-    "Please choose what game mode you would like to play\n",
+    "Choose what game mode you would like to play",
     modeSelectMenu
   );
 
@@ -69,11 +74,11 @@ const runSelectionMenus = (gameMode) => {
 
   gameMode = gameModeSelection;
 
-  players.push(new Player("human", 1));
+  playerList.push(new Player("human", 1));
 
-  shouldRunOnePlayerGame(gameMode, players, currentPlayer);
+  shouldRunOnePlayerGame(gameMode, playerList, currentPlayerNum);
 
-  if (!shouldRunTwoPlayerGame(gameMode, players, playerSelectMenu)) {
+  if (!shouldRunTwoPlayerGame(gameMode, playerList, playerSelectMenu)) {
     console.log("Goodbye!");
     return;
   }
@@ -86,13 +91,13 @@ const beginGame = (mode) => {
   );
   console.log("=".repeat(100), "\n");
 
-  runSelectionMenus(mode);
+  runSelectionMenus(mode, players, currentPlayer);
 };
 
 console.clear();
 // beginGame(gameMode);
 
-runSelectionMenus(gameMode);
+runSelectionMenus(gameMode, players, currentPlayer);
 
 // initializeAllPlayers(players);
 
