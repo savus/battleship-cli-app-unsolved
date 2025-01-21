@@ -5,7 +5,7 @@ import {
   printBoards,
   setCell,
 } from "./board-functions";
-import { allShipLocations, alphabet, gameMode, textColors } from "./game-start";
+import { allShipLocations, alphabet, textColors } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -75,7 +75,7 @@ export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
   const gameMessage =
     activePlayer.type === "human"
       ? `${textColors["green"]}You made a hit!${textColors["default"]}`
-      : `${textColors["red"]}The computer scored a hit!${textColors["default"]}`;
+      : `${textColors["red"]}${str}\nThe computer scored a hit!${textColors["default"]}`;
 
   readlineSync.question(gameMessage);
   hitShip.subtractLives(1);
@@ -96,7 +96,7 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
       const gameMessage =
         activePlayer.type == "human"
           ? `${textColors["red"]}Sorry, you missed!${textColors["default"]}`
-          : `${textColors["cyan"]}The computer missed${textColors["default"]}`;
+          : `${textColors["cyan"]}${str}\nThe computer missed${textColors["default"]}`;
 
       setCell(board, str, { type: "empty", id: 0, hit: true });
       readlineSync.question(gameMessage);
@@ -109,9 +109,8 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
   return false;
 };
 
-export const playGame = (playerList, currentPlayerNum, debugMode) => {
+export const playGame = (playerList, currentPlayerNum, gameMode, debugMode) => {
   const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
-
   const activePlayer = getActivePlayer(gameMode, playerList, currentPlayerNum);
 
   const opposingPlayer = getOpposingPlayer(
@@ -145,7 +144,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
     debugMode = !debugMode;
-    return playGame(playerList, currentPlayerNum, debugMode);
+    return playGame(playerList, currentPlayerNum, gameMode, debugMode);
   } else {
     const whichBoardToCheck = gameIsTwoPlayers
       ? opposingPlayer.board
@@ -156,7 +155,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
       : activePlayer.ships;
 
     if (!areCoordsValid(whichBoardToCheck, cleanStrCopy))
-      return playGame(playerList, currentPlayerNum, debugMode);
+      return playGame(playerList, currentPlayerNum, gameMode, debugMode);
 
     let gameIsOver = mainGamePlay(
       whichBoardToCheck,
@@ -168,7 +167,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     if (gameIsOver) return;
   }
   currentPlayerNum = gameIsTwoPlayers ? (currentPlayerNum === 1 ? 2 : 1) : 1;
-  return playGame(playerList, currentPlayerNum, debugMode);
+  return playGame(playerList, currentPlayerNum, gameMode, debugMode);
 };
 
 export const initializeAllPlayers = (playerList) => {
