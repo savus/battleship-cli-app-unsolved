@@ -23,10 +23,11 @@ export const printBoard = (board, debug = false) => {
 
   const displayCellType = (cell) => {
     const images = {
-      second: () => (debug ? "🟠" : cell.hit ? "🟠" : "🔳"),
-      first: () => (debug ? "🔵" : cell.hit ? "🔵" : "🔳"),
-      empty: () => (debug ? (cell.hit ? "❗" : "🔳") : cell.hit ? "❗" : "🔳"),
+      first: () => (cell.hit ? "🔴" : debug ? "🔵" : "🔳"),
+      second: () => (cell.hit ? "🔴" : debug ? "🟢" : "🔳"),
+      empty: () => (cell.hit ? "❗" : debug ? "🔳" : "🔳"),
     };
+
     return images[cell.type]();
   };
 
