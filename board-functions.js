@@ -39,7 +39,7 @@ export const printBoard = (board, debug = false) => {
 
 export const printBoards = (playerList, debug = false) => {
   playerList.forEach((player) => {
-    if (isGameTwoPlayers()) console.log(`Player: ${player.playerNum}`);
+    if (isGameTwoPlayers(gameMode)) console.log(`Player: ${player.playerNum}`);
 
     if (debug) console.log(`Player Ships: ${player.shipLocations}`);
 

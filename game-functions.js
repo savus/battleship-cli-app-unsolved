@@ -9,7 +9,7 @@ import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
 
-export const isGameTwoPlayers = () => gameMode === "2-player";
+export const isGameTwoPlayers = (mode) => mode === "2-player";
 
 export const checkAllShipLocations = (locationsArr, str) =>
   locationsArr.includes(str);
@@ -71,8 +71,8 @@ const mainGamePlay = (board, shipList, str) => {
   return false;
 };
 
-export const playerTurn = (players, currentPlayer, debug) => {
-  const gameIsTwoPlayers = isGameTwoPlayers();
+export const playGame = (players, currentPlayer, debug) => {
+  const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
 
   const activePlayer =
     gameMode === "1-player"
@@ -104,7 +104,7 @@ export const playerTurn = (players, currentPlayer, debug) => {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
     debug = !debug;
-    return playerTurn(players, currentPlayer, debug);
+    return playGame(players, currentPlayer, debug);
   } else {
     const whichBoardToCheck = gameIsTwoPlayers
       ? enemyPlayer.board
@@ -123,7 +123,7 @@ export const playerTurn = (players, currentPlayer, debug) => {
     if (gameIsOver) return;
   }
   currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
-  return playerTurn(players, currentPlayer, debug);
+  return playGame(players, currentPlayer, debug);
 };
 
 export const initializeAllPlayers = () => {

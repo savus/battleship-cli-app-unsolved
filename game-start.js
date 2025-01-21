@@ -1,8 +1,4 @@
-import {
-  getActivePlayer,
-  initializeAllPlayers,
-  playerTurn,
-} from "./game-functions";
+import { initializeAllPlayers, playGame } from "./game-functions";
 import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -20,3 +16,5 @@ export const players = [player1, player2];
 export const allShipLocations = [];
 
 initializeAllPlayers();
+
+playGame(players, currentPlayer, true);
