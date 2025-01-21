@@ -45,6 +45,23 @@ const shouldRunOnePlayerGame = (gameMode, playerList, currentPlayerNum) => {
   }
 };
 
+const shouldRunTwoPlayerGame = (gameMode, playerSelectionList) => {
+  if (gameMode === "2-player") {
+    console.clear();
+    let playerSelect = getUserSelection(
+      "Who would you like to be your opponent\n",
+      playerSelectionList
+    );
+
+    if (playerSelect === "quit") return false;
+
+    players.push(new Player("human", 1));
+    // players.push(new Player(playerSelectMenu[playerSelect], 2));
+    // initializeAllPlayers(players);
+    // playGame(players, currentPlayer, gameMode, false);
+  }
+};
+
 const runSelectionMenus = (gameMode) => {
   let gameModeSelection = getUserSelection(
     "Please choose what game mode you would like to play\n",
@@ -60,28 +77,10 @@ const runSelectionMenus = (gameMode) => {
 
   shouldRunOnePlayerGame(gameMode, players, currentPlayer);
 
-  // if (gameMode === "1-player") {
-  //   players.push(new Player("human"));
-  //   initializeAllPlayers(players);
-  //   playGame(players, currentPlayer, false);
-  // }
-
-  // if (modeSelectMenu[modeSelect] === "2-player") {
-  //   console.clear();
-  //   let playerSelect = readlineSync.keyInSelect(
-  //     playerSelectMenu,
-  //     "Who would you like to be your opponent?"
-  //   );
-
-  //   if (playerSelect === -1) {
-  //     return runSelectionMenus(gameMode);
-  //   }
-
-  //   players.push(new Player("human", 1));
-  //   players.push(new Player(playerSelectMenu[playerSelect], 2));
-  //   initializeAllPlayers(players);
-  //   playGame(players, currentPlayer, gameMode, false);
-  // }
+  if (!shouldRunTwoPlayerGame(gameMode, playerSelectMenu)) {
+    console.log("Goodbye!");
+    return;
+  }
 };
 
 const beginGame = (mode) => {
