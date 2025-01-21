@@ -1,9 +1,4 @@
-import {
-  initializeAllPlayers,
-  isGameTwoPlayers,
-  playGame,
-  readlineSync,
-} from "./game-functions";
+import { initializeAllPlayers, playGame, readlineSync } from "./game-functions";
 import { Player } from "./player-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -39,13 +34,12 @@ const getUserSelection = (message, list) => {
 
 const shouldRunOnePlayerGame = (gameMode, playerList, currentPlayerNum) => {
   if (gameMode === "1-player") {
-    playerList.push(new Player("human"));
     initializeAllPlayers(playerList);
     playGame(playerList, currentPlayerNum, false);
   }
 };
 
-const shouldRunTwoPlayerGame = (gameMode, playerSelectionList) => {
+const shouldRunTwoPlayerGame = (gameMode, playerList, playerSelectionList) => {
   if (gameMode === "2-player") {
     console.clear();
     let playerSelect = getUserSelection(
@@ -55,10 +49,10 @@ const shouldRunTwoPlayerGame = (gameMode, playerSelectionList) => {
 
     if (playerSelect === "quit") return false;
 
-    players.push(new Player("human", 1));
-    // players.push(new Player(playerSelectMenu[playerSelect], 2));
-    // initializeAllPlayers(players);
-    // playGame(players, currentPlayer, gameMode, false);
+    playerList.push(new Player(playerSelect, 2));
+
+    initializeAllPlayers(players);
+    playGame(players, currentPlayer, gameMode, false);
   }
 };
 
@@ -75,9 +69,11 @@ const runSelectionMenus = (gameMode) => {
 
   gameMode = gameModeSelection;
 
+  players.push(new Player("human", 1));
+
   shouldRunOnePlayerGame(gameMode, players, currentPlayer);
 
-  if (!shouldRunTwoPlayerGame(gameMode, playerSelectMenu)) {
+  if (!shouldRunTwoPlayerGame(gameMode, players, playerSelectMenu)) {
     console.log("Goodbye!");
     return;
   }
