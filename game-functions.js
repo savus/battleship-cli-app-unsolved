@@ -4,7 +4,7 @@ import {
   printBoards,
   setCell,
 } from "./board-functions";
-import { allShipLocations, alphabet, textColors } from "./game-start";
+import { alphabet, textColors } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -27,9 +27,6 @@ const getComputersDecision = (board) => {
     return getComputersDecision(board);
   return randomCoords;
 };
-
-export const checkAllShipLocations = (locationsArr, str) =>
-  locationsArr.includes(str);
 
 export const findShip = (shipList, str) =>
   shipList.find((ship) => ship.locations.includes(str));
@@ -172,6 +169,5 @@ export const playGame = (playerList, currentPlayerNum, gameMode, debugMode) => {
 export const initializeAllPlayers = (playerList) => {
   playerList.forEach((player) => {
     player.addShipsToBoard();
-    allShipLocations.push(...player.shipLocations);
   });
 };
