@@ -1,5 +1,5 @@
 import { isGameTwoPlayers } from "./game-functions";
-import { alphabet, gameMode } from "./game-start";
+import { alphabet } from "./game-start";
 import { separateChars } from "./validations";
 
 export const createBoard = (size) => {

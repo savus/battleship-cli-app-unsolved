@@ -1,10 +1,5 @@
-import { getCell, printBoard, printBoards, setCell } from "./board-functions";
-import {
-  allShipLocations,
-  currentPlayer,
-  gameMode,
-  players,
-} from "./game-start";
+import { getCell, printBoards, setCell } from "./board-functions";
+import { allShipLocations, gameMode } from "./game-start";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const readlineSync = require("readline-sync");
@@ -64,20 +59,19 @@ export const shipIsHit = (board, shipList, str, hitShip) => {
 
 const mainGamePlay = (board, shipList, str) => {
   let gameIsOver = false;
-  if (areCoordsValid(board, str)) {
-    if (isLocationAlreadyHit(board, str)) {
-      readlineSync.question("This location has already been hit");
+  if (isLocationAlreadyHit(board, str)) {
+    readlineSync.question("This location has already been hit");
+  } else {
+    const hitShip = findShip(shipList, str);
+    if (!hitShip) {
+      setCell(board, str, { type: "empty", id: 0, hit: true });
+      readlineSync.question("Sorry, you missed!");
     } else {
-      const hitShip = findShip(shipList, str);
-      if (!hitShip) {
-        setCell(board, str, { type: "empty", id: 0, hit: true });
-        readlineSync.question("Sorry, you missed!");
-      } else {
-        gameIsOver = shipIsHit(board, shipList, str, hitShip);
-        if (gameIsOver) return true;
-      }
+      gameIsOver = shipIsHit(board, shipList, str, hitShip);
+      if (gameIsOver) return true;
     }
   }
+
   return false;
 };
 
@@ -113,6 +107,7 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
       playerList,
       currentPlayerNum
     );
+
     const whichBoardToCheck = gameIsTwoPlayers
       ? opposingPlayer.board
       : activePlayer.board;
@@ -120,6 +115,9 @@ export const playGame = (playerList, currentPlayerNum, debugMode) => {
     const whichShipsToCheck = gameIsTwoPlayers
       ? opposingPlayer.ships
       : activePlayer.ships;
+
+    if (!areCoordsValid(whichBoardToCheck, cleanStrCopy))
+      return playGame(playerList, currentPlayerNum, debugMode);
 
     let gameIsOver = mainGamePlay(
       whichBoardToCheck,
