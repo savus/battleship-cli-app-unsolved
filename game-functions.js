@@ -1,7 +1,6 @@
 import {
   getCell,
   getRandomCoords,
-  isCellOccupied,
   printBoards,
   setCell,
 } from "./board-functions";

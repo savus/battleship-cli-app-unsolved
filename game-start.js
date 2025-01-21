@@ -26,6 +26,25 @@ export const players = [];
 
 export const allShipLocations = [];
 
+const getGameModeInput = () => {
+  let userInput = readlineSync.question(
+    "Which game mode would you like to play?"
+  );
+};
+
+const getUserSelection = (message, list) => {
+  console.log(list);
+  const userInput = readlineSync.question(message);
+  const onlyNumbers = userInput.replace(/[^\d]/gi, "");
+
+  if (userInput === "quit") return;
+
+  if (list[onlyNumbers]) return list[onlyNumbers];
+
+  console.log("Invalid choice");
+  return getUserSelection(message, list);
+};
+
 const runSelectionMenus = (gameMode) => {
   let modeSelect = readlineSync.keyInSelect(
     modeSelectMenu,
@@ -74,7 +93,9 @@ const beginGame = (mode) => {
 };
 
 console.clear();
-beginGame(gameMode);
+// beginGame(gameMode);
+
+console.log(getUserSelection("Please select item\n", ["Moose", "Bat", "Mice"]));
 // initializeAllPlayers(players);
 
 // playGame(players, currentPlayer, true);
