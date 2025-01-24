@@ -1,7 +1,3 @@
-import { createBoard } from "./board-functions";
-import { boardSize } from "./game-start";
-import { createShips, shipData } from "./ship-functions";
-
 export class Player {
   constructor(type, playerNum) {
     this.type = type;

@@ -1,24 +1,21 @@
 import {
-  getCell,
-  getRandomCoords,
-  printBoards,
-  setCell,
-} from "./board-functions";
-import { alphabet, textColors } from "./game-start";
-import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
+  currentPlayer,
+  debug,
+  gameMode,
+  players,
+  textColors,
+} from "./game-start";
 
-export const readlineSync = require("readline-sync");
+const isGameTwoPlayers = () => gameMode === "2-player";
 
-export const isGameTwoPlayers = (mode) => mode === "2-player";
+const getActivePlayer = () =>
+  isGameTwoPlayers()
+    ? players.find((player) => player.playerNum === currentPlayer)
+    : players[0];
 
-export const getActivePlayer = (mode, playerList, currentPlayerNum) =>
-  mode === "2-player"
-    ? playerList.find((player) => player.playerNum === currentPlayerNum)
-    : playerList[0];
-
-export const getOpposingPlayer = (mode, playerList, currentPlayerNum) =>
-  mode === "2-player"
-    ? playerList.find((player) => player.playerNum !== currentPlayerNum)
+const getOpposingPlayer = () =>
+  isGameTwoPlayers()
+    ? players.find((player) => player.playerNum !== currentPlayer)
     : null;
 
 const getComputersDecision = (board) => {
@@ -28,14 +25,14 @@ const getComputersDecision = (board) => {
   return randomCoords;
 };
 
-export const findShip = (shipList, str) =>
+const findShip = (shipList, str) =>
   shipList.find((ship) => ship.locations.includes(str));
 
-export const isLocationAlreadyHit = (board, str) => getCell(board, str).hit;
+const isLocationAlreadyHit = (board, str) => getCell(board, str).hit;
 
-export const isShipDead = (ship) => ship.lives === 0;
+const isShipDead = (ship) => ship.lives === 0;
 
-export const checkIfWon = (shipList) =>
+const checkIfWon = (shipList) =>
   shipList.filter((ship) => ship.lives > 0) === 0;
 
 const displayEndGameMessage = (gameMessage) => {
@@ -45,7 +42,7 @@ const displayEndGameMessage = (gameMessage) => {
   console.log("=".repeat(100));
 };
 
-export const shipIsSunk = (hitShip, shipList, activePlayer) => {
+const shipIsSunk = (hitShip, shipList, activePlayer) => {
   if (isShipDead(hitShip)) {
     const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
     readlineSync.question(
@@ -68,7 +65,7 @@ export const shipIsSunk = (hitShip, shipList, activePlayer) => {
   return false;
 };
 
-export const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
+const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
   let gameIsOver = false;
   setCell(board, str, {
     type: hitShip.type,
@@ -113,15 +110,11 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
   return false;
 };
 
-export const playGame = (playerList, currentPlayerNum, gameMode, debugMode) => {
+const playGame = () => {
   const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
-  const activePlayer = getActivePlayer(gameMode, playerList, currentPlayerNum);
+  const activePlayer = getActivePlayer();
 
-  const opposingPlayer = getOpposingPlayer(
-    gameMode,
-    playerList,
-    currentPlayerNum
-  );
+  const opposingPlayer = getOpposingPlayer();
 
   const userInputMessage =
     activePlayer.type === "human"
@@ -130,12 +123,12 @@ export const playGame = (playerList, currentPlayerNum, gameMode, debugMode) => {
             ? `${textColors["green"]}Player: ${activePlayer.playerNum} ${textColors["default"]}`
             : ""
         }Please enter coords... \nUse format A0...B1...C3...etc\n[type "quit" to exit the game or "debug" to ${
-          debugMode ? "exit" : "enter"
+          debug ? "exit" : "enter"
         } debug mode]\n`
       : "Computer is thinking";
 
   console.clear();
-  printBoards(playerList, gameMode, debugMode);
+  printBoards();
 
   let userInput = readlineSync.question(userInputMessage);
 
@@ -174,8 +167,19 @@ export const playGame = (playerList, currentPlayerNum, gameMode, debugMode) => {
   return playGame(playerList, currentPlayerNum, gameMode, debugMode);
 };
 
-export const initializeAllPlayers = (playerList) => {
+const initializeAllPlayers = (playerList) => {
   playerList.forEach((player) => {
     player.addShipsToBoard();
   });
+};
+
+export const beginGame = () => {
+  console.log("=".repeat(100), "\n");
+  console.log(
+    `${textColors["cyan"]}Hello! Welcome to my mini-battleship game! ${textColors["default"]}\n`
+  );
+  console.log("=".repeat(100), "\n");
+
+  readlineSync.question("Press any key to continue ...");
+  runSelectionMenus();
 };

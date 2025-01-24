@@ -1,8 +1,6 @@
-import { isGameTwoPlayers } from "./game-functions";
-import { alphabet, textColors } from "./game-start";
-import { separateChars } from "./validations";
+import { debug } from "./game-start";
 
-export const createBoard = (size) => {
+const createBoard = (size) => {
   const board = {
     size: size,
     grid: {},
@@ -18,7 +16,7 @@ export const createBoard = (size) => {
   return board;
 };
 
-export const printBoard = (board, debug = false) => {
+export const printBoard = () => {
   const gridDisplay = {};
 
   const displayCellType = (cell) => {
@@ -38,7 +36,7 @@ export const printBoard = (board, debug = false) => {
   return console.table(gridDisplay);
 };
 
-export const printBoards = (playerList, mode, debugMode = false) => {
+const printBoards = (playerList, mode, debugMode = false) => {
   console.log("=".repeat(100));
   console.log(
     `${textColors["cyan"]}${mode.toUpperCase()} Mode!${textColors["default"]}`
@@ -66,22 +64,22 @@ export const printBoards = (playerList, mode, debugMode = false) => {
   });
 };
 
-export const getCell = (board, strCoords) => {
+const getCell = (board, strCoords) => {
   const [col, row] = separateChars(strCoords);
   return board.grid[col][row];
 };
 
-export const isCellOccupied = (board, str) => {
+const isCellOccupied = (board, str) => {
   const [col, row] = separateChars(str);
   return board.grid[col][row].type !== "empty";
 };
 
-export const setCell = (board, strCoords, cell) => {
+const setCell = (board, strCoords, cell) => {
   const [col, row] = separateChars(strCoords);
   return (board.grid[col][row] = cell);
 };
 
-export const getRandomCoords = (board, letters) => {
+const getRandomCoords = (board, letters) => {
   let yCoord = letters[Math.floor(Math.random() * board.size)];
   let xCoord = Math.floor(Math.random() * board.size);
   return `${yCoord}${xCoord}`;

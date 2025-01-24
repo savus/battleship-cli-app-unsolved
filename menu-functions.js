@@ -1,8 +1,14 @@
-import { initializeAllPlayers, playGame, readlineSync } from "./game-functions";
-import { textColors } from "./game-start";
+import {
+  currentPlayer,
+  gameMode,
+  modeSelectMenu,
+  players,
+  readlineSync,
+  textColors,
+} from "./game-start";
 import { Player } from "./player-functions";
 
-export const getUserSelection = (message, list) => {
+const getUserSelection = (message, list) => {
   console.clear();
   console.log(list.map((item, index) => `[${index + 1}] ${item}`));
   const userInput = readlineSync.question(
@@ -19,23 +25,14 @@ export const getUserSelection = (message, list) => {
   return getUserSelection(message, list);
 };
 
-export const shouldRunOnePlayerGame = (
-  gameMode,
-  playerList,
-  currentPlayerNum
-) => {
+const shouldRunOnePlayerGame = () => {
   if (gameMode === "1-player") {
-    initializeAllPlayers(playerList);
-    return playGame(playerList, currentPlayerNum, gameMode, false);
+    initializeAllPlayers(players);
+    return playGame(players, currentPlayer, gameMode, false);
   }
 };
 
-export const shouldRunTwoPlayerGame = (
-  gameMode,
-  playerList,
-  playerSelectionList,
-  currentPlayerNum
-) => {
+const shouldRunTwoPlayerGame = () => {
   if (gameMode === "2-player") {
     console.clear();
     let playerSelect = getUserSelection(
@@ -52,13 +49,7 @@ export const shouldRunTwoPlayerGame = (
   }
 };
 
-export const runSelectionMenus = (
-  gameMode,
-  playerList,
-  currentPlayerNum,
-  modeSelectMenu,
-  playerSelectMenu
-) => {
+export const runSelectionMenus = () => {
   let gameModeSelection = getUserSelection(
     "Choose what game mode you would like to play",
     modeSelectMenu
@@ -71,9 +62,9 @@ export const runSelectionMenus = (
 
   gameMode = gameModeSelection;
 
-  playerList.push(new Player("human", 1));
+  players.push(new Player("human", 1));
 
-  shouldRunOnePlayerGame(gameMode, playerList, currentPlayerNum);
+  shouldRunOnePlayerGame();
 
   if (
     !shouldRunTwoPlayerGame(

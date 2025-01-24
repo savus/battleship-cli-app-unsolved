@@ -1,13 +1,20 @@
-import { readlineSync } from "./game-functions";
-import { runSelectionMenus } from "./menu-functions";
+import { beginGame } from "./game-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export const boardSize = 3;
-const modeSelectMenu = ["1-player", "2-player"];
-const playerSelectMenu = ["human", "computer"];
+export const modeSelectMenu = ["1-player", "2-player"];
+export const playerSelectMenu = ["human", "computer"];
 export let debug = false;
 export let currentPlayer = 1;
 export let gameMode = "";
+export const readlineSync = require("readline-sync");
+export const shipData = [
+  { name: "Destroyer", id: 1, length: 2 },
+  { name: "Submarine", id: 2, length: 3 },
+  // { name: "Cruiser", id: 3, length: 3 },
+  // { name: "Battleship", id: 4, length: 4 },
+  // { name: "Carrier", id: 5, length: 5 },
+];
 
 export const textColors = {
   red: "\x1b[31m",
@@ -19,22 +26,5 @@ export const textColors = {
 
 export const players = [];
 
-const beginGame = (mode) => {
-  console.log("=".repeat(100), "\n");
-  console.log(
-    `${textColors["cyan"]}Hello! Welcome to my mini-battleship game! ${textColors["default"]}\n`
-  );
-  console.log("=".repeat(100), "\n");
-
-  readlineSync.question("Press any key to continue ...");
-  runSelectionMenus(
-    mode,
-    players,
-    currentPlayer,
-    modeSelectMenu,
-    playerSelectMenu
-  );
-};
-
 console.clear();
-beginGame(gameMode);
+beginGame();

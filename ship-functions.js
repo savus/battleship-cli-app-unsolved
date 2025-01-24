@@ -1,19 +1,3 @@
-import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
-import { alphabet } from "./game-start";
-import {
-  areCoordsWithinBoard,
-  convertCoordsToNums,
-  convertCoordsToString,
-} from "./validations";
-
-export const shipData = [
-  { name: "Destroyer", id: 1, length: 2 },
-  { name: "Submarine", id: 2, length: 3 },
-  // { name: "Cruiser", id: 3, length: 3 },
-  // { name: "Battleship", id: 4, length: 4 },
-  // { name: "Carrier", id: 5, length: 5 },
-];
-
 class Ship {
   constructor(name, id, type, length, isHorizontal) {
     this.name = name;
@@ -59,7 +43,7 @@ class Ship {
   }
 }
 
-export const createShips = (data, type) => {
+const createShips = (data, type) => {
   return data.map((ship) => {
     const { name, id, length } = ship;
     const horizontal = Math.floor(Math.random() * 2) === 0 ? true : false;
