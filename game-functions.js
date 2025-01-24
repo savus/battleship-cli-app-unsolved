@@ -1,12 +1,16 @@
+import { getCell, getRandomCoords, setCell } from "./board-functions";
 import {
   currentPlayer,
   debug,
   gameMode,
   players,
+  readlineSync,
   textColors,
 } from "./game-start";
+import { runSelectionMenus } from "./menu-functions";
+import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
-const isGameTwoPlayers = () => gameMode === "2-player";
+export const isGameTwoPlayers = () => gameMode === "2-player";
 
 const getActivePlayer = () =>
   isGameTwoPlayers()
@@ -19,7 +23,7 @@ const getOpposingPlayer = () =>
     : null;
 
 const getComputersDecision = (board) => {
-  const randomCoords = getRandomCoords(board, alphabet);
+  const randomCoords = getRandomCoords(board);
   if (isLocationAlreadyHit(board, randomCoords))
     return getComputersDecision(board);
   return randomCoords;
@@ -140,8 +144,8 @@ const playGame = () => {
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
-    debugMode = !debugMode;
-    return playGame(playerList, currentPlayerNum, gameMode, debugMode);
+    debug = !debug;
+    return playGame();
   } else {
     const whichBoardToCheck = gameIsTwoPlayers
       ? opposingPlayer.board
@@ -151,8 +155,7 @@ const playGame = () => {
       ? opposingPlayer.ships
       : activePlayer.ships;
 
-    if (!areCoordsValid(whichBoardToCheck, cleanStrCopy))
-      return playGame(playerList, currentPlayerNum, gameMode, debugMode);
+    if (!areCoordsValid(whichBoardToCheck, cleanStrCopy)) return playGame();
 
     let gameIsOver = mainGamePlay(
       whichBoardToCheck,
@@ -163,8 +166,8 @@ const playGame = () => {
 
     if (gameIsOver) return;
   }
-  currentPlayerNum = gameIsTwoPlayers ? (currentPlayerNum === 1 ? 2 : 1) : 1;
-  return playGame(playerList, currentPlayerNum, gameMode, debugMode);
+  currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
+  return playGame();
 };
 
 const initializeAllPlayers = (playerList) => {

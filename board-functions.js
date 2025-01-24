@@ -1,6 +1,8 @@
-import { debug } from "./game-start";
+import { isGameTwoPlayers } from "./game-functions";
+import { alphabet, debug, gameMode, players, textColors } from "./game-start";
+import { separateChars } from "./validations";
 
-const createBoard = (size) => {
+export const createBoard = (size) => {
   const board = {
     size: size,
     grid: {},
@@ -16,7 +18,7 @@ const createBoard = (size) => {
   return board;
 };
 
-export const printBoard = () => {
+export const printBoard = (board) => {
   const gridDisplay = {};
 
   const displayCellType = (cell) => {
@@ -36,14 +38,16 @@ export const printBoard = () => {
   return console.table(gridDisplay);
 };
 
-const printBoards = (playerList, mode, debugMode = false) => {
+export const printBoards = () => {
   console.log("=".repeat(100));
   console.log(
-    `${textColors["cyan"]}${mode.toUpperCase()} Mode!${textColors["default"]}`
+    `${textColors["cyan"]}${gameMode.toUpperCase()} Mode!${
+      textColors["default"]
+    }`
   );
   console.log("=".repeat(100));
-  playerList.forEach((player) => {
-    if (isGameTwoPlayers(mode)) {
+  players.forEach((player) => {
+    if (isGameTwoPlayers()) {
       const isPlayerOne = player.playerNum === 1;
       const boardMessage = `${
         isPlayerOne ? textColors["green"] : textColors["cyan"]
@@ -60,27 +64,27 @@ const printBoards = (playerList, mode, debugMode = false) => {
         )}${textColors["default"]}\n`
       );
 
-    printBoard(player.board, debugMode);
+    printBoard(player.board);
   });
 };
 
-const getCell = (board, strCoords) => {
+export const getCell = (board, strCoords) => {
   const [col, row] = separateChars(strCoords);
   return board.grid[col][row];
 };
 
-const isCellOccupied = (board, str) => {
+export const isCellOccupied = (board, str) => {
   const [col, row] = separateChars(str);
   return board.grid[col][row].type !== "empty";
 };
 
-const setCell = (board, strCoords, cell) => {
+export const setCell = (board, strCoords, cell) => {
   const [col, row] = separateChars(strCoords);
   return (board.grid[col][row] = cell);
 };
 
-const getRandomCoords = (board, letters) => {
-  let yCoord = letters[Math.floor(Math.random() * board.size)];
+export const getRandomCoords = (board) => {
+  let yCoord = alphabet[Math.floor(Math.random() * board.size)];
   let xCoord = Math.floor(Math.random() * board.size);
   return `${yCoord}${xCoord}`;
 };
