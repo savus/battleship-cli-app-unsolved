@@ -1,4 +1,4 @@
-import { getRandomCoords, isCellOccupied } from "./board-functions";
+import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
 import { alphabet } from "./game-start";
 import {
   areCoordsWithinBoard,

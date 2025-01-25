@@ -1,10 +1,17 @@
-import { getCell, getRandomCoords, setCell } from "./board-functions";
+import {
+  getCell,
+  getRandomCoords,
+  printBoards,
+  setCell,
+} from "./board-functions";
 import {
   currentPlayer,
   debug,
   gameMode,
   players,
   readlineSync,
+  setCurrentPlayer,
+  setDebug,
   textColors,
 } from "./game-start";
 import { runSelectionMenus } from "./menu-functions";
@@ -114,7 +121,7 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
   return false;
 };
 
-const playGame = () => {
+export const playGame = () => {
   const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
   const activePlayer = getActivePlayer();
 
@@ -144,7 +151,7 @@ const playGame = () => {
   if (cleanStrCopy.toLowerCase() === "quit") {
     return;
   } else if (cleanStrCopy.toLowerCase() === "debug") {
-    debug = !debug;
+    setDebug(!debug);
     return playGame();
   } else {
     const whichBoardToCheck = gameIsTwoPlayers
@@ -166,7 +173,8 @@ const playGame = () => {
 
     if (gameIsOver) return;
   }
-  currentPlayer = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
+  let currentPlayerNum = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
+  setCurrentPlayer(currentPlayerNum);
   return playGame();
 };
 

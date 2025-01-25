@@ -57,7 +57,7 @@ export const printBoards = () => {
       console.log(boardMessage);
     }
 
-    if (debugMode)
+    if (debug)
       console.log(
         `Player Ships: ${textColors["magenta"]}${JSON.stringify(
           player.shipLocations

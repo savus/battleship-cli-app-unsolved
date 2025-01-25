@@ -6,7 +6,7 @@ export const modeSelectMenu = ["1-player", "2-player"];
 export const playerSelectMenu = ["human", "computer"];
 export let debug = false;
 export let currentPlayer = 1;
-export let gameMode = "";
+export let gameMode = "1-player";
 export const readlineSync = require("readline-sync");
 export const shipData = [
   { name: "Destroyer", id: 1, length: 2 },
@@ -25,6 +25,10 @@ export const textColors = {
 };
 
 export const players = [];
+
+export const setDebug = (boolean) => (debug = boolean);
+export const setCurrentPlayer = (int) => (currentPlayer = int);
+export const setGameMode = (string) => (gameMode = string);
 
 console.clear();
 beginGame();

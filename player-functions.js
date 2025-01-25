@@ -1,5 +1,5 @@
 import { createBoard } from "./board-functions";
-import { shipData } from "./game-start";
+import { boardSize, shipData } from "./game-start";
 import { createShips } from "./ship-functions";
 
 export class Player {

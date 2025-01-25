@@ -1,9 +1,14 @@
-import { initializeAllPlayers, isGameTwoPlayers } from "./game-functions";
+import {
+  initializeAllPlayers,
+  isGameTwoPlayers,
+  playGame,
+} from "./game-functions";
 import {
   modeSelectMenu,
   players,
   playerSelectMenu,
   readlineSync,
+  setGameMode,
   textColors,
 } from "./game-start";
 import { Player } from "./player-functions";
@@ -60,7 +65,7 @@ export const runSelectionMenus = () => {
     return;
   }
 
-  gameMode = gameModeSelection;
+  setGameMode(gameModeSelection);
 
   players.push(new Player("human", 1));
 
