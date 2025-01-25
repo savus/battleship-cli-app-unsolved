@@ -1,5 +1,6 @@
 import { getRandomCoords, isCellOccupied, setCell } from "./board-functions";
 import { alphabet } from "./game-start";
+import type { Board, ShipData, ShipType } from "./types";
 import {
   areCoordsWithinBoard,
   convertCoordsToNums,
@@ -7,7 +8,21 @@ import {
 } from "./validations";
 
 class Ship {
-  constructor(name, id, type, length, isHorizontal) {
+  name: string;
+  id: number;
+  type: ShipType;
+  length: number;
+  isHorizontal: boolean;
+  lives: number;
+  locations: string[];
+
+  constructor(
+    name: string,
+    id: number,
+    type: ShipType,
+    length: number,
+    isHorizontal: boolean
+  ) {
     this.name = name;
     this.id = id;
     this.type = type;
@@ -17,8 +32,8 @@ class Ship {
     this.locations = [];
   }
 
-  placePieces(board) {
-    let startingPoint = getRandomCoords(board, alphabet);
+  placePieces(board: Board): undefined {
+    let startingPoint = getRandomCoords(board);
     let [col, row] = convertCoordsToNums(startingPoint);
     let trackedLocations = [];
 
@@ -44,15 +59,16 @@ class Ship {
     }
 
     this.locations.push(...trackedLocations);
+    return;
   }
 
-  subtractLives(num) {
+  subtractLives(num: number) {
     this.lives -= num;
   }
 }
 
-export const createShips = (data, type) => {
-  return data.map((ship) => {
+export const createShips = (shipData: ShipData[], type: ShipType) => {
+  return shipData.map((ship) => {
     const { name, id, length } = ship;
     const horizontal = Math.floor(Math.random() * 2) === 0 ? true : false;
     return new Ship(name, id, type, length, horizontal);

@@ -1,14 +1,16 @@
 import { beginGame } from "./game-functions";
+import type { Player } from "./player-functions";
+import type { CurrentPlayer, GameMode, ShipData } from "./types";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export const boardSize = 8;
 export const modeSelectMenu = ["1-player", "2-player"];
 export const playerSelectMenu = ["human", "computer"];
 export let debug = false;
-export let currentPlayer = 1;
-export let gameMode = "1-player";
+export let currentPlayer: CurrentPlayer = 1;
+export let gameMode: GameMode = "1-player";
 export const readlineSync = require("readline-sync");
-export const shipData = [
+export const shipData: ShipData[] = [
   { name: "Destroyer", id: 1, length: 2 },
   { name: "Submarine", id: 2, length: 3 },
   { name: "Cruiser", id: 3, length: 3 },
@@ -24,11 +26,11 @@ export const textColors = {
   default: "\x1b[0m",
 };
 
-export const players = [];
+export const players: Player[] = [];
 
-export const setDebug = (boolean) => (debug = boolean);
-export const setCurrentPlayer = (int) => (currentPlayer = int);
-export const setGameMode = (string) => (gameMode = string);
+export const setDebug = (mode: boolean) => (debug = mode);
+export const setCurrentPlayer = (int: CurrentPlayer) => (currentPlayer = int);
+export const setGameMode = (mode: GameMode) => (gameMode = mode);
 
 console.clear();
 beginGame();

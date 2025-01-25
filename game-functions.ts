@@ -15,6 +15,7 @@ import {
   textColors,
 } from "./game-start";
 import { runSelectionMenus } from "./menu-functions";
+import type { Board } from "./types";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const isGameTwoPlayers = () => gameMode === "2-player";
@@ -29,14 +30,14 @@ const getOpposingPlayer = () =>
     ? players.find((player) => player.playerNum !== currentPlayer)
     : null;
 
-const getComputersDecision = (board) => {
+const getComputersDecision = (board: Board) => {
   const randomCoords = getRandomCoords(board);
   if (isLocationAlreadyHit(board, randomCoords))
     return getComputersDecision(board);
   return randomCoords;
 };
 
-const findShip = (shipList, str) =>
+const findShip = (shipList, str: string) =>
   shipList.find((ship) => ship.locations.includes(str));
 
 const isLocationAlreadyHit = (board, str) => getCell(board, str).hit;
