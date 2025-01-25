@@ -1,7 +1,7 @@
 import { beginGame } from "./game-functions";
 
 export const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-export const boardSize = 3;
+export const boardSize = 8;
 export const modeSelectMenu = ["1-player", "2-player"];
 export const playerSelectMenu = ["human", "computer"];
 export let debug = false;
@@ -11,9 +11,9 @@ export const readlineSync = require("readline-sync");
 export const shipData = [
   { name: "Destroyer", id: 1, length: 2 },
   { name: "Submarine", id: 2, length: 3 },
-  // { name: "Cruiser", id: 3, length: 3 },
-  // { name: "Battleship", id: 4, length: 4 },
-  // { name: "Carrier", id: 5, length: 5 },
+  { name: "Cruiser", id: 3, length: 3 },
+  { name: "Battleship", id: 4, length: 4 },
+  { name: "Carrier", id: 5, length: 5 },
 ];
 
 export const textColors = {
