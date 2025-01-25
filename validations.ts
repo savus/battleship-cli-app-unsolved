@@ -1,37 +1,38 @@
-import { readlineSync } from "./game-start";
+import { alphabet, readlineSync } from "./game-start";
+import type { Board } from "./types";
 
-export const removeSpacesAndSpecialChars = (str) =>
-  str.replace(/[^a-z0-9]/gi, "");
+export const removeSpacesAndSpecialChars = (input: string) =>
+  input.replace(/[^a-z0-9]/gi, "");
 
-const areCharsCorrectType = (str) => /[a-z]{1}\d{1,2}/i.test(str);
+const areCharsCorrectType = (input: string) => /[a-z]{1}\d{1,2}/i.test(input);
 
-export const separateChars = (str) => {
-  const col = str.slice(0, 1);
-  const row = str.slice(1);
+export const separateChars = (strCoords: string) => {
+  const col = strCoords.slice(0, 1);
+  const row = strCoords.slice(1);
   return [col, row];
 };
 
-export const convertCoordsToNums = (str) => {
-  const [col, row] = separateChars(str);
-  return [col.charCodeAt() - 65, parseInt(row)];
+export const convertCoordsToNums = (strCoords: string) => {
+  const [col, row] = separateChars(strCoords);
+  return [col.charCodeAt(0) - 65, parseInt(row)];
 };
 
-export const convertCoordsToString = (col, row, letters) => {
-  return `${letters[col]}${row}`;
+export const convertCoordsToString = (col: number, row: number) => {
+  return `${alphabet[col]}${row}`;
 };
 
-export const areCoordsWithinBoard = (board, str) => {
-  const [col, row] = convertCoordsToNums(str);
+export const areCoordsWithinBoard = (board: Board, strCoords: string) => {
+  const [col, row] = convertCoordsToNums(strCoords);
   return col < board.size && row < board.size;
 };
 
-export const areCoordsValid = (board, str) => {
-  if (!areCharsCorrectType(str)) {
+export const areCoordsValid = (board: Board, strCoords: string) => {
+  if (!areCharsCorrectType(strCoords)) {
     readlineSync.question("Information is invalid");
     return false;
   }
 
-  if (!areCoordsWithinBoard(board, str)) {
+  if (!areCoordsWithinBoard(board, strCoords)) {
     readlineSync.question("Coordinates are not within board");
     return false;
   }
