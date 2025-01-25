@@ -15,20 +15,26 @@ import {
   textColors,
 } from "./game-start";
 import { runSelectionMenus } from "./menu-functions";
+import type { Player } from "./player-functions";
+import type { Ship } from "./ship-functions";
 import type { Board } from "./types";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const isGameTwoPlayers = () => gameMode === "2-player";
 
-const getActivePlayer = () =>
-  isGameTwoPlayers()
-    ? players.find((player) => player.playerNum === currentPlayer)
-    : players[0];
+const getActivePlayer = (): Player => {
+  const activePlayer = players.find(
+    (player) => player.playerNum === currentPlayer
+  );
+  return activePlayer === undefined ? players[0] : activePlayer;
+};
 
-const getOpposingPlayer = () =>
-  isGameTwoPlayers()
-    ? players.find((player) => player.playerNum !== currentPlayer)
-    : null;
+const getOpposingPlayer = (): Player | null => {
+  const opposingPlayer = players.find(
+    (player) => player.playerNum !== currentPlayer
+  );
+  return opposingPlayer === undefined ? null : opposingPlayer;
+};
 
 const getComputersDecision = (board: Board) => {
   const randomCoords = getRandomCoords(board);
@@ -37,24 +43,22 @@ const getComputersDecision = (board: Board) => {
   return randomCoords;
 };
 
-const findShip = (shipList, str: string) =>
+const findShip = (shipList: Ship[], str: string) =>
   shipList.find((ship) => ship.locations.includes(str));
 
-const isLocationAlreadyHit = (board, str) => getCell(board, str).hit;
+const isLocationAlreadyHit = (board: Board, str: string) =>
+  getCell(board, str).hit;
 
-const isShipDead = (ship) => ship.lives === 0;
+const isShipDead = (ship: Ship) => ship.lives === 0;
 
-const checkIfWon = (shipList) =>
-  shipList.filter((ship) => ship.lives > 0) === 0;
-
-const displayEndGameMessage = (gameMessage) => {
+const displayEndGameMessage = (gameMessage: string) => {
   console.clear();
   console.log("=".repeat(100));
   console.log("💠".repeat(6), gameMessage, "💠".repeat(6));
   console.log("=".repeat(100));
 };
 
-const shipIsSunk = (hitShip, shipList, activePlayer) => {
+const shipIsSunk = (hitShip: Ship, shipList: Ship[], activePlayer: Player) => {
   if (isShipDead(hitShip)) {
     const remainingShips = shipList.filter((ship) => ship.lives > 0).length;
     readlineSync.question(
@@ -77,9 +81,15 @@ const shipIsSunk = (hitShip, shipList, activePlayer) => {
   return false;
 };
 
-const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
+const shipIsHit = (
+  board: Board,
+  shipList: Ship[],
+  activePlayer: Player,
+  coords: string,
+  hitShip: Ship
+) => {
   let gameIsOver = false;
-  setCell(board, str, {
+  setCell(board, coords, {
     type: hitShip.type,
     id: hitShip.id,
     hit: true,
@@ -88,7 +98,7 @@ const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
   const gameMessage =
     activePlayer.type === "human"
       ? `${textColors["green"]}You made a hit!${textColors["default"]}`
-      : `${textColors["red"]}${str}\nThe computer scored a hit!${textColors["default"]}`;
+      : `${textColors["red"]}${coords}\nThe computer scored a hit!${textColors["default"]}`;
 
   readlineSync.question(gameMessage);
   hitShip.subtractLives(1);
@@ -97,24 +107,29 @@ const shipIsHit = (board, shipList, activePlayer, str, hitShip) => {
   return false;
 };
 
-const mainGamePlay = (board, shipList, activePlayer, str) => {
+const mainGamePlay = (
+  board: Board,
+  shipList: Ship[],
+  activePlayer: Player,
+  coords: string
+) => {
   let gameIsOver = false;
-  if (isLocationAlreadyHit(board, str)) {
+  if (isLocationAlreadyHit(board, coords)) {
     readlineSync.question(
       `${textColors["cyan"]}This location has already been hit${textColors["default"]}`
     );
   } else {
-    const hitShip = findShip(shipList, str);
+    const hitShip = findShip(shipList, coords);
     if (!hitShip) {
       const gameMessage =
         activePlayer.type == "human"
           ? `${textColors["red"]}Sorry, you missed!${textColors["default"]}`
-          : `${textColors["cyan"]}${str}\nThe computer missed${textColors["default"]}`;
+          : `${textColors["cyan"]}${coords}\nThe computer missed${textColors["default"]}`;
 
-      setCell(board, str, { type: "empty", id: 0, hit: true });
+      setCell(board, coords, { type: "empty", id: 0, hit: true });
       readlineSync.question(gameMessage);
     } else {
-      gameIsOver = shipIsHit(board, shipList, activePlayer, str, hitShip);
+      gameIsOver = shipIsHit(board, shipList, activePlayer, coords, hitShip);
       if (gameIsOver) return true;
     }
   }
@@ -122,8 +137,8 @@ const mainGamePlay = (board, shipList, activePlayer, str) => {
   return false;
 };
 
-export const playGame = () => {
-  const gameIsTwoPlayers = isGameTwoPlayers(gameMode);
+export const playGame = (): undefined => {
+  const gameIsTwoPlayers = isGameTwoPlayers();
   const activePlayer = getActivePlayer();
 
   const opposingPlayer = getOpposingPlayer();

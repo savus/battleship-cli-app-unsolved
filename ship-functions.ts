@@ -7,7 +7,7 @@ import {
   convertCoordsToString,
 } from "./validations";
 
-class Ship {
+export class Ship {
   name: string;
   id: number;
   type: ShipType;
