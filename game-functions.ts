@@ -17,23 +17,23 @@ import {
 import { runSelectionMenus } from "./menu-functions";
 import type { Player } from "./player-functions";
 import type { Ship } from "./ship-functions";
-import type { Board } from "./types";
+import type { Board, CurrentPlayer } from "./types";
 import { areCoordsValid, removeSpacesAndSpecialChars } from "./validations";
 
 export const isGameTwoPlayers = () => gameMode === "2-player";
 
-const getActivePlayer = (): Player => {
-  const activePlayer = players.find(
-    (player) => player.playerNum === currentPlayer
-  );
-  return activePlayer === undefined ? players[0] : activePlayer;
+export const getActivePlayer = () => {
+  if (isGameTwoPlayers()) {
+    return players[currentPlayer - 1];
+  } else {
+    return players[0];
+  }
 };
 
-const getOpposingPlayer = (): Player | null => {
-  const opposingPlayer = players.find(
-    (player) => player.playerNum !== currentPlayer
-  );
-  return opposingPlayer === undefined ? null : opposingPlayer;
+export const getOpposingPlayer = () => {
+  if (isGameTwoPlayers()) {
+    return currentPlayer === 2 ? players[0] : players[1];
+  } else return players[1];
 };
 
 const getComputersDecision = (board: Board) => {
@@ -189,7 +189,11 @@ export const playGame = (): undefined => {
 
     if (gameIsOver) return;
   }
-  let currentPlayerNum = gameIsTwoPlayers ? (currentPlayer === 1 ? 2 : 1) : 1;
+  let currentPlayerNum: CurrentPlayer = gameIsTwoPlayers
+    ? currentPlayer === 1
+      ? 2
+      : 1
+    : 1;
   setCurrentPlayer(currentPlayerNum);
   return playGame();
 };
