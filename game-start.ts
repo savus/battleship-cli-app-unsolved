@@ -8,7 +8,7 @@ export const modeSelectMenu = ["1-player", "2-player"];
 export const playerSelectMenu = ["human", "computer"];
 export let debug = false;
 export let currentPlayer: CurrentPlayer = 1;
-export let gameMode: GameMode = "1-player";
+export let gameMode = "1-player";
 export const readlineSync = require("readline-sync");
 export const shipData: ShipData[] = [
   { name: "Destroyer", id: 1, length: 2 },

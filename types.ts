@@ -1,5 +1,5 @@
 export type CurrentPlayer = 1 | 2;
-export type GameMode = "1-player" | "2-player";
+export type GameMode = string;
 export type PlayerType = "human" | "computer";
 export type ShipType = "first" | "second";
 export type ShipData = {

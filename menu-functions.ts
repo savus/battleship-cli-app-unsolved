@@ -12,8 +12,9 @@ import {
   textColors,
 } from "./game-start";
 import { Player } from "./player-functions";
+import type { PlayerType } from "./types";
 
-const getUserSelection = (message, list) => {
+const getUserSelection = (message: string, list: string[]) => {
   console.clear();
   console.log(list.map((item, index) => `[${index + 1}] ${item}`));
   const userInput = readlineSync.question(
