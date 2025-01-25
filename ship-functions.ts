@@ -38,7 +38,7 @@ export class Ship {
     let trackedLocations = [];
 
     for (let i = 0; i < this.length; i++) {
-      const string = convertCoordsToString(col, row, alphabet);
+      const string = convertCoordsToString(col, row);
       if (
         !areCoordsWithinBoard(board, string) ||
         isCellOccupied(board, string)

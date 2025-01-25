@@ -6,15 +6,15 @@ export const removeSpacesAndSpecialChars = (input: string) =>
 
 const areCharsCorrectType = (input: string) => /[a-z]{1}\d{1,2}/i.test(input);
 
-export const separateChars = (strCoords: string) => {
+export const separateChars = (strCoords: string): [string, number] => {
   const col = strCoords.slice(0, 1);
-  const row = strCoords.slice(1);
+  const row = parseInt(strCoords.slice(1));
   return [col, row];
 };
 
 export const convertCoordsToNums = (strCoords: string) => {
   const [col, row] = separateChars(strCoords);
-  return [col.charCodeAt(0) - 65, parseInt(row)];
+  return [col.charCodeAt(0) - 65, row];
 };
 
 export const convertCoordsToString = (col: number, row: number) => {
