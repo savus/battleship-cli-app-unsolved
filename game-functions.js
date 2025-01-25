@@ -170,8 +170,8 @@ const playGame = () => {
   return playGame();
 };
 
-const initializeAllPlayers = (playerList) => {
-  playerList.forEach((player) => {
+export const initializeAllPlayers = () => {
+  players.forEach((player) => {
     player.addShipsToBoard();
   });
 };

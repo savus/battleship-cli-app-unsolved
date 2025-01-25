@@ -1,8 +1,8 @@
+import { initializeAllPlayers, isGameTwoPlayers } from "./game-functions";
 import {
-  currentPlayer,
-  gameMode,
   modeSelectMenu,
   players,
+  playerSelectMenu,
   readlineSync,
   textColors,
 } from "./game-start";
@@ -26,26 +26,26 @@ const getUserSelection = (message, list) => {
 };
 
 const shouldRunOnePlayerGame = () => {
-  if (gameMode === "1-player") {
-    initializeAllPlayers(players);
-    return playGame(players, currentPlayer, gameMode, false);
+  if (!isGameTwoPlayers()) {
+    initializeAllPlayers();
+    return playGame();
   }
 };
 
 const shouldRunTwoPlayerGame = () => {
-  if (gameMode === "2-player") {
+  if (isGameTwoPlayers()) {
     console.clear();
     let playerSelect = getUserSelection(
       "Who would you like to be your opponent",
-      playerSelectionList
+      playerSelectMenu
     );
 
     if (!playerSelect) return false;
 
-    playerList.push(new Player(playerSelect, 2));
+    players.push(new Player(playerSelect, 2));
 
-    initializeAllPlayers(playerList);
-    return playGame(playerList, currentPlayerNum, gameMode, false);
+    initializeAllPlayers();
+    return playGame();
   }
 };
 
@@ -66,14 +66,7 @@ export const runSelectionMenus = () => {
 
   shouldRunOnePlayerGame();
 
-  if (
-    !shouldRunTwoPlayerGame(
-      gameMode,
-      playerList,
-      playerSelectMenu,
-      currentPlayerNum
-    )
-  ) {
+  if (!shouldRunTwoPlayerGame()) {
     console.log("Goodbye!");
     return;
   }
