@@ -1,9 +1,10 @@
 import { isGameTwoPlayers } from "./game-functions";
 import { alphabet, debug, gameMode, players, textColors } from "./game-start";
+import type { Board, Cell, DisplayGrid } from "./types";
 import { separateChars } from "./validations";
 
-export const createBoard = (size) => {
-  const board = {
+export const createBoard = (size: number) => {
+  const board: Board = {
     size: size,
     grid: {},
   };
@@ -18,14 +19,14 @@ export const createBoard = (size) => {
   return board;
 };
 
-export const printBoard = (board) => {
-  const gridDisplay = {};
+export const printBoard = (board: Board) => {
+  const gridDisplay: DisplayGrid = {};
 
-  const displayCellType = (cell) => {
+  const displayCellType = (cell: Cell) => {
     const images = {
-      first: () => (cell.hit ? "🔴" : debug ? "🔵" : "🔳"),
-      second: () => (cell.hit ? "🔴" : debug ? "🟢" : "🔳"),
-      empty: () => (cell.hit ? "❗" : debug ? "🔳" : "🔳"),
+      first: (): string => (cell.hit ? "🔴" : debug ? "🔵" : "🔳"),
+      second: (): string => (cell.hit ? "🔴" : debug ? "🟢" : "🔳"),
+      empty: (): string => (cell.hit ? "❗" : debug ? "🔳" : "🔳"),
     };
 
     return images[cell.type]();
@@ -68,22 +69,22 @@ export const printBoards = () => {
   });
 };
 
-export const getCell = (board, strCoords) => {
+export const getCell = (board: Board, strCoords: string) => {
   const [col, row] = separateChars(strCoords);
   return board.grid[col][row];
 };
 
-export const isCellOccupied = (board, str) => {
-  const [col, row] = separateChars(str);
+export const isCellOccupied = (board: Board, strCoords: string) => {
+  const [col, row] = separateChars(strCoords);
   return board.grid[col][row].type !== "empty";
 };
 
-export const setCell = (board, strCoords, cell) => {
+export const setCell = (board: Board, strCoords: string, cell: Cell) => {
   const [col, row] = separateChars(strCoords);
   return (board.grid[col][row] = cell);
 };
 
-export const getRandomCoords = (board) => {
+export const getRandomCoords = (board: Board) => {
   let yCoord = alphabet[Math.floor(Math.random() * board.size)];
   let xCoord = Math.floor(Math.random() * board.size);
   return `${yCoord}${xCoord}`;

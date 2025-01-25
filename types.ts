@@ -10,5 +10,21 @@ export type ShipData = {
 
 export type Board = {
   size: number;
-  grid: {};
+  grid: Grid;
+};
+
+export type Grid = {
+  [key: string]: Row;
+};
+
+export type Row = Cell[];
+
+export type Cell = {
+  type: "first" | "second" | "empty";
+  id: number;
+  hit: boolean;
+};
+
+export type DisplayGrid = {
+  [key: string]: string[];
 };
